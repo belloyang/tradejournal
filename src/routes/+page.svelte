@@ -1,5 +1,6 @@
 <script>
 	import Counter from './Counter.svelte';
+	import { page } from '$app/stores';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
     import CurrentDate from './CurrentDate.svelte';
@@ -24,7 +25,9 @@
 	</h1>
 	<CurrentDate />
 
-	
+	<div aria-current={$page.url.pathname === '/trade-detail' ? 'page' : undefined}>
+		<button style="padding: 10px;"><a href="/trade-detail">Add a Trade</a></button>
+	</div>
 </section>
 
 
