@@ -2,6 +2,7 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+    import CurrentDate from './CurrentDate.svelte';
 </script>
 
 <svelte:head>
@@ -19,6 +20,7 @@
 		</span>
 
 		to <br />TradeJournal App
+		<br /> <CurrentDate />
 	</h1>
 
 	
