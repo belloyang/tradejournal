@@ -20,11 +20,13 @@
 		</span>
 
 		to <br />TradeJournal App
-		<br /> <CurrentDate />
+		<br />
 	</h1>
+	<CurrentDate />
 
 	
 </section>
+
 
 <style>
 	section {

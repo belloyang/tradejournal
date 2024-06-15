@@ -10,6 +10,14 @@ const dayOfWeek = daysOfWeek[currentDate.getDay()];
 $: today = dayOfWeek + ' ' + formattedDate;
 </script>
 
-<div>
+<div style="text-align: center;">
     <p style="font-size:x-large">Today is {today}</p>
+    {#if dayOfWeek === 'Friday'}
+        <h1>TGIF, Happy Friday!</h1>
+    {:else if dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday'}
+        <h1>Have a nice weekend!</h1>
+    {:else}
+        <h1>Happy {dayOfWeek}!</h1>
+    {/if}
+   
 </div>
