@@ -11,6 +11,7 @@ enum TradeType {
 export class OptionTrade {
     symbol: string;
     optionType: OptionType;
+    tradeType: TradeType;
     strike: number;
     expiration: string;
     quantity: number; 
@@ -19,12 +20,14 @@ export class OptionTrade {
     constructor(
         symbol: string,
         optionType: OptionType,
+        tradeType: TradeType,
         strike: number,
         expiration: string,
         quantity: number, 
         premium: number) {
         this.symbol = symbol;
         this.optionType = optionType;
+        this.tradeType = tradeType;
         this.strike = strike;
         this.expiration = expiration;
         this.quantity = quantity;

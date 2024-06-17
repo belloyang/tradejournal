@@ -8,6 +8,8 @@
         console.log(`submit trade @${new Date().toDateString()}:`, optionTrade, );
         // Here, you can add your form submission logic, e.g., sending data to a server.
         optionTrades.set([optionTrade]);
+        // navigate to trade-list
+        window.location.href = '/trade-list';
     }
 $: optionTrades;
   let optionTrade: OptionTrade = new OptionTrade();
@@ -31,12 +33,12 @@ $: optionTrades;
       <option value="Call">Call</option>
       <option value="Put">Put</option>
     </select>
-    <label for="strikePrice">Strike Price</label>
-    <input type="number" id="strikePrice" bind:value={optionTrade.strikePrice} required />
+    <label for="strike">Strike Price</label>
+    <div>$<input type="number" id="strike" bind:value={optionTrade.strike} required /></div>
     <label for="expirationDate">Expiration Date</label>
     <input type="date" id="expirationDate" bind:value={optionTrade.expirationDate} required />
     <label for="premium">Premium</label>
-    <input type="number" id="premium" bind:value={optionTrade.premium} required />
+    <div>$<input type="number" step="0.01" min=0 id="premium" bind:value={optionTrade.premium} required /></div>
 
     <button type="submit">Submit</button>
   </form>
