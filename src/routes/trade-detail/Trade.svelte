@@ -1,15 +1,14 @@
 <script lang="ts">
     import { OptionTrade, optionTrades } from "./trade";
-    let name = '';
-    let email = '';
-    
-    
+     
     function handleSubmit() {
         console.log(`submit trade @${new Date().toDateString()}:`, optionTrade, );
         // Here, you can add your form submission logic, e.g., sending data to a server.
-        optionTrades.set([optionTrade]);
+        optionTrades.update((trades) => [...trades, optionTrade]);
+
         // navigate to trade-list
         window.location.href = '/trade-list';
+        
     }
 $: optionTrades;
   let optionTrade: OptionTrade = new OptionTrade();
@@ -42,7 +41,6 @@ $: optionTrades;
 
     <button type="submit">Submit</button>
   </form>
-
 
   <style>
     form {

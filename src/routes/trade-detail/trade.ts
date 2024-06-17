@@ -13,7 +13,7 @@ export class OptionTrade {
     optionType: OptionType;
     tradeType: TradeType;
     strike: number;
-    expiration: string;
+    expirationDate: string;
     quantity: number; 
     premium: number;
 
@@ -22,14 +22,14 @@ export class OptionTrade {
         optionType: OptionType,
         tradeType: TradeType,
         strike: number,
-        expiration: string,
+        expirationDate: string,
         quantity: number, 
         premium: number) {
         this.symbol = symbol;
         this.optionType = optionType;
         this.tradeType = tradeType;
         this.strike = strike;
-        this.expiration = expiration;
+        this.expirationDate = expirationDate;
         this.quantity = quantity;
         this.premium = premium;
     }
