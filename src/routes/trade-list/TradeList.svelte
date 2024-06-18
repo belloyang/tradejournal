@@ -30,7 +30,7 @@
             <p>{trade.optionType}</p>
             <p>{trade.quantity}</p>
             <p>{trade.premium}</p>
-            <p>{trade.expiration}</p>
+            <p>{trade.expirationDate}</p>
         </li>
     {/each}
 </ul>
