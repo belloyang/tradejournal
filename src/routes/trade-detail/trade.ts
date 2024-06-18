@@ -8,6 +8,10 @@ enum TradeType {
     BUY = 'BUY',
     SELL = 'SELL'
 }
+enum TradeStatus {
+    OPEN = 'OPEN',
+    CLOSED = 'CLOSED'
+}
 export class OptionTrade {
     symbol: string;
     optionType: OptionType;
@@ -16,6 +20,7 @@ export class OptionTrade {
     expirationDate: string;
     quantity: number; 
     premium: number;
+    status: string;
 
     constructor(
         symbol: string,
@@ -24,7 +29,8 @@ export class OptionTrade {
         strike: number,
         expirationDate: string,
         quantity: number, 
-        premium: number) {
+        premium: number,
+        status: TradeStatus = TradeStatus.OPEN) {
         this.symbol = symbol;
         this.optionType = optionType;
         this.tradeType = tradeType;
@@ -32,6 +38,7 @@ export class OptionTrade {
         this.expirationDate = expirationDate;
         this.quantity = quantity;
         this.premium = premium;
+        this.status = status;
     }
 }
 

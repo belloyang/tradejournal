@@ -26,6 +26,12 @@ app.post('/api/users', (req, res) => {
   res.json({ id: result.lastInsertRowid });
 });
 
+app.get('/api/option_trades', (req, res) => {
+  const stmt = db.prepare('SELECT * FROM option_trades');
+  const users = stmt.all();
+  res.json({ data: users });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });

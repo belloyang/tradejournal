@@ -7,8 +7,7 @@
 
 	onMount(() => {
 		console.log('Home mounted');
-		//call http://localhost:3000/api/users
-		fetch('http://localhost:3000/api/users')
+		fetch('http://localhost:3000/api/option_trades')
 			.then(response => response.json())
 			.then(data => console.log(data));
 	});
