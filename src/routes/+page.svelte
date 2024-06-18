@@ -1,10 +1,17 @@
 <script>
-	import Counter from './Counter.svelte';
-	import { page } from '$app/stores';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
     import CurrentDate from './CurrentDate.svelte';
     import AddTrade from './trade-detail/AddTrade.svelte';
+    import { onMount } from 'svelte';
+
+	onMount(() => {
+		console.log('Home mounted');
+		//call http://localhost:3000/api/users
+		fetch('http://localhost:3000/api/users')
+			.then(response => response.json())
+			.then(data => console.log(data));
+	});
 </script>
 
 <svelte:head>

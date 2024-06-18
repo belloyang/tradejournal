@@ -1,9 +1,15 @@
 // server.ts
 import express from 'express';
+import cors from 'cors';
 import db from './database';
 
 const app = express();
 const port = 3000;
+
+// Configure CORS to allow requests from your frontend
+app.use(cors({
+  origin: 'http://localhost:5174' // Replace with your SvelteKit frontend's origin
+}));
 
 app.use(express.json());
 
