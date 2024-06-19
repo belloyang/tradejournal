@@ -15,12 +15,13 @@ db.exec(`
     CREATE TABLE option_trades (
         id INTEGER PRIMARY KEY,
         symbol TEXT,
-        quantity INTEGER,
-        premium REAL,
-        strike REAL,
-        expirationDate TEXT,
         optionType TEXT,
         tradeType TEXT,
+        strike REAL,
+        expirationDate TEXT,
+        quantity INTEGER,
+        premium REAL,
+        marketValue REAL,
         status TEXT,
         created_at TEXT,
         updated_at TEXT
@@ -28,8 +29,8 @@ db.exec(`
 `);
 
 db.exec(`
-    INSERT INTO option_trades (symbol, quantity, premium, strike, expirationDate, optionType, tradeType, status, created_at, updated_at) VALUES 
-    ('AAPL', 1, 100, 150, '2022-01-01', 'CALL', 'BUY', 'OPEN', '2021-01-01', '2021-01-01')
+    INSERT INTO option_trades (symbol, optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at) VALUES 
+    ('AAPL', 'CALL', 'BUY', 150, '2022-01-01', 1, 100,100, 'OPEN', '2021-01-01', '2021-01-01')
 `);
 
 export default db;

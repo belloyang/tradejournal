@@ -20,7 +20,8 @@ export class OptionTrade {
     expirationDate: string;
     quantity: number; 
     premium: number;
-    status: string;
+    marketValue: number;
+    status: TradeStatus;
 
     constructor(
         symbol: string,
@@ -39,6 +40,7 @@ export class OptionTrade {
         this.quantity = quantity;
         this.premium = premium;
         this.status = status;
+        this.marketValue = premium;
     }
 }
 

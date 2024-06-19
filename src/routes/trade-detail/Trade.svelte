@@ -38,11 +38,14 @@ $: optionTrades;
     <input type="date" id="expirationDate" bind:value={optionTrade.expirationDate} required />
     <label for="premium">Premium</label>
     <div>$<input type="number" step="0.01" min=0 id="premium" bind:value={optionTrade.premium} required /></div>
+    <label for="marketValue">Market Value</label>
+    <div>$<input type="number" step="0.01" min=0 id="marketValue" bind:value={optionTrade.marketValue} required /></div>
     <label for="status">Status</label>
     <select id="status" bind:value={optionTrade.status}>
       <option value="Open">Open</option>
       <option value="Closed">Closed</option>
     </select>
+    <br/>
     <button type="submit">Submit</button>
   </form>
 
