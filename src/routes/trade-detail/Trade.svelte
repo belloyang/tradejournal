@@ -1,6 +1,6 @@
 <script lang="ts">
     import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
-    import { OptionTrade, optionTrades } from "./trade";
+    import { OptionTrade, TradeStatus, optionTrades } from "./trade";
      
     let trades = [];
     async function addTrade(trade: OptionTrade) {
@@ -59,8 +59,8 @@ $: optionTrades;
     <div>$<input type="number" step="0.01" min=0 id="marketValue" bind:value={optionTrade.marketValue} required /></div>
     <label for="status">Status</label>
     <select id="status" bind:value={optionTrade.status}>
-      <option value="Open">Open</option>
-      <option value="Closed">Closed</option>
+      <option value={TradeStatus.OPEN}>OPEN</option>
+      <option value={TradeStatus.CLOSED}>CLOSED</option>
     </select>
     <br/>
     <button type="submit">Submit</button>

@@ -1,3 +1,7 @@
+<script>
+    import TradeList from "../trade-list/TradeList.svelte";
+
+</script>
 <svelte:head>
 	<title>Trade summary Today</title>
 	<meta name="description" content="Trade summary today" />
@@ -7,4 +11,6 @@
     <h1>Trade summary Today</h1>
     <p>
         This is a summary of your trades today.
+    </p>
+    <TradeList />
 </div>
