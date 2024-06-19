@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
     import CurrentDate from './CurrentDate.svelte';
     import AddTrade from './trade-detail/AddTrade.svelte';
     import { onMount } from 'svelte';
+	import { DB_HOST, DB_PORT } from '../lib/utils/db-host';
 
 	onMount(() => {
 		console.log('Home mounted');
-		fetch('http://localhost:3000/api/option_trades')
+		fetch(`${DB_HOST}:${DB_PORT}/api/option_trades`)
 			.then(response => response.json())
 			.then(data => console.log(data));
 	});
