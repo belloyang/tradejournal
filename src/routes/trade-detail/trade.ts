@@ -1,14 +1,14 @@
 import {writable} from 'svelte/store';
 
-enum OptionType {
+export enum OptionType {
     CALL = 'CALL',
     PUT = 'PUT'
 }
-enum TradeType {
+export enum TradeType {
     BUY = 'BUY',
     SELL = 'SELL'
 }
-enum TradeStatus {
+export enum TradeStatus {
     OPEN = 'OPEN',
     CLOSED = 'CLOSED'
 }

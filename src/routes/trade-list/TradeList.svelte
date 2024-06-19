@@ -1,20 +1,27 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade, optionTrades } from '../trade-detail/trade'
+    import { OptionTrade } from '../trade-detail/trade'
     import AddTrade from '../trade-detail/AddTrade.svelte';
+    import { DB_HOST, DB_PORT } from '../../lib/utils/db-host';
+    import TradeItem from './TradeItem.svelte';
 
     let tradeList: OptionTrade[] = [];
-    const unsubscribe = optionTrades.subscribe((trades) => {
-        tradeList = trades;
-        console.log('TradeList updated', tradeList);
-    });
+  
+
+    
 
     onMount(() => {
-        console.log('TradeList mounted', tradeList);
-    });
+		console.log('TradeList mounted');
+		fetch(`${DB_HOST}:${DB_PORT}/api/option_trades`)
+			.then(response => response.json())
+			.then(obj => {
+                tradeList = [...obj.data];
+                console.log("TradeList:", tradeList);
+            });
+	});
 
     onDestroy(() => {
-        unsubscribe();
+       
     });
 </script>
 
@@ -25,12 +32,7 @@
 <ul>
     {#each tradeList as trade}
         <li>
-            <p>{trade.symbol}</p>
-            <p>{trade.strike}</p>
-            <p>{trade.optionType}</p>
-            <p>{trade.quantity}</p>
-            <p>{trade.premium}</p>
-            <p>{trade.expirationDate}</p>
+           <TradeItem trade={trade}/>
         </li>
     {/each}
 </ul>

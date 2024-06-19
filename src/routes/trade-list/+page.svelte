@@ -1,7 +1,7 @@
 <script>
+    import { onMount } from "svelte";
     import TradeList from "./TradeList.svelte";
-
-    
+	
 
 </script>
 <svelte:head>
