@@ -1,12 +1,14 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade } from '../trade-detail/trade'
+    import { OptionTrade, TradeStatus } from '../trade-detail/trade'
     import AddTrade from '../trade-detail/AddTrade.svelte';
     import { DB_HOST, DB_PORT } from '../../lib/utils/db-host';
     import TradeItem from './TradeItem.svelte';
 
     export let selectedDate: Date| undefined = undefined;
     let tradeList: OptionTrade[] = [];
+    let openTrades: OptionTrade[] = [];
+    let closedTrades: OptionTrade[] = [];
   
     let modifierStr: string = '';
     $: selectedDateChanged(selectedDate);
@@ -44,6 +46,8 @@
         fetch(apiURL).then(response => response.json())
             .then(obj => {
                 tradeList = [...obj.data];
+                openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
+                closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
                 console.log("Trades of the day:", tradeList, selectedDate && selectedDate.toDateString());
             });
         modifierStr = modifier();
@@ -67,13 +71,46 @@
 </svelte:head>
 
 <p>You have {tradeList.length} trade{tradeList.length<=1?'' : 's'} created {modifierStr}!</p>
-<ul>
-    {#each tradeList as trade}
+{#if tradeList.length > 0}
+<div class="container">
+
+   <div id="open-trades">
+   <h2>Open trades</h2>
+   <ul>
+    {#if openTrades.length > 0}
+    {#each openTrades as trade}
+   
+    <li>
+       <TradeItem trade={trade}/>
+    </li>
+    
+    {/each}
+    {:else}
+    <li>No open trades</li>
+    {/if}
+    </ul> 
+    </div>
+
+    <div id="closed-trades">
+        <h2>Closed trades</h2>
+    
+    <ul>
+      {#if closedTrades.length > 0}
+      {#each closedTrades as trade}
+      
         <li>
            <TradeItem trade={trade}/>
         </li>
-    {/each}
-</ul>
+
+     {/each} 
+     {:else}
+     <li>No closed trades</li>
+     {/if}  
+    </ul>
+    </div>
+</div>
+{/if}
+
 <AddTrade />
 
 <style>
@@ -86,5 +123,11 @@
         border: 1px solid black;
         margin: 5px;
         padding: 5px;
+    }
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 </style>
