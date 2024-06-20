@@ -1,5 +1,13 @@
 <script>
+    import { onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
+    import { DB_HOST, DB_PORT } from '../../lib/utils/db-host';
+
+    let tradeList = [];
+    onMount(() => {
+        console.log('Trade summary mounted');
+
+    });
 
 </script>
 <svelte:head>
@@ -12,5 +20,6 @@
     <p>
         This is a summary of your trades today.
     </p>
-    <TradeList />
+   
+    <TradeList selectedDate = {new Date()}/>
 </div>
