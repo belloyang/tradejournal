@@ -73,61 +73,72 @@
 <p>You have {tradeList.length} trade{tradeList.length<=1?'' : 's'} created {modifierStr}!</p>
 {#if tradeList.length > 0}
 <div class="container">
-
-   <div id="open-trades">
-   <h2>Open trades</h2>
-   <ul>
-    {#if openTrades.length > 0}
-    {#each openTrades as trade}
-   
-    <li>
-       <TradeItem trade={trade}/>
-    </li>
-    
-    {/each}
-    {:else}
-    <li>No open trades</li>
-    {/if}
-    </ul> 
+    <div class="trades" id="open-trades">
+      <h2>Open trades</h2>
+      <ul>
+        {#if openTrades.length > 0}
+          {#each openTrades as trade}
+            <li>
+              <TradeItem {trade} />
+            </li>
+          {/each}
+        {:else}
+          <li class="no-trades">No open trades</li>
+        {/if}
+      </ul>
     </div>
-
-    <div id="closed-trades">
-        <h2>Closed trades</h2>
-    
-    <ul>
-      {#if closedTrades.length > 0}
-      {#each closedTrades as trade}
-      
-        <li>
-           <TradeItem trade={trade}/>
-        </li>
-
-     {/each} 
-     {:else}
-     <li>No closed trades</li>
-     {/if}  
-    </ul>
+  
+    <div class="trades" id="closed-trades">
+      <h2>Closed trades</h2>
+      <ul>
+        {#if closedTrades.length > 0}
+          {#each closedTrades as trade}
+            <li>
+              <TradeItem {trade} />
+            </li>
+          {/each}
+        {:else}
+          <li class="no-trades">No closed trades</li>
+        {/if}
+      </ul>
     </div>
-</div>
+  </div>
 {/if}
 
 <AddTrade />
 
 <style>
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
+   .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
 
-    li {
-        border: 1px solid black;
-        margin: 5px;
-        padding: 5px;
-    }
-    .container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
+  .trades {
+    width: 45%;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .no-trades {
+    color: #888;
+    font-style: italic;
+  }
 </style>
