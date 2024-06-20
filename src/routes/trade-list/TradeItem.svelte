@@ -28,7 +28,5 @@
         padding: 8px;
         margin-bottom: 10px;
     }
-    button {
-        padding: 10px;
-    }
+
 </style>

@@ -35,10 +35,7 @@
         <img src="/caret-right.svg" alt="caret-right" />
     </button>
     </div>
-    <p>
-        This is a summary of your trades today.
-    </p>
-   
+    
     <TradeList selectedDate = {selectedDate}/>
 </div>
 
