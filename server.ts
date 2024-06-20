@@ -28,9 +28,20 @@ app.post('/api/users', (req, res) => {
 });
 
 app.get('/api/option_trades', (req, res) => {
-  const stmt = db.prepare('SELECT * FROM option_trades');
-  const users = stmt.all();
-  res.json({ data: users });
+  
+  const createdAt = req.query.created_at;
+  let trades = [];
+  if(createdAt) {
+    console.log("find trades createdAt", createdAt);
+    const stmt = db.prepare('SELECT * FROM option_trades WHERE DATE(created_at) == DATE(?)');
+    trades = stmt.all(createdAt);
+  } else {
+    const stmt = db.prepare('SELECT * FROM option_trades');
+    trades = stmt.all();
+  }
+  
+  console.log("GET to /api/option_trades", req.query, trades);
+  res.json({ data: trades });
 });
 
 app.post('/api/option_trades', (req, res) => {
