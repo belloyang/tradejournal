@@ -1,6 +1,7 @@
 <script lang="ts">
     import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
-    import { OptionTrade, TradeStatus, optionTrades } from "./trade";
+    import { fetchAllOptionTrades } from "$lib/utils/fetch-trades";
+    import { OptionTrade, TradeStatus, OptionTrades } from "./trade";
      
     let trades = [];
     async function addTrade(trade: OptionTrade) {
@@ -20,14 +21,12 @@
     function handleSubmit() {
         console.log(`submit trade @${new Date().toDateString()}:`, optionTrade, );
         // Here, you can add your form submission logic, e.g., sending data to a server.
-        // optionTrades.update((trades) => [...trades, optionTrade]);
-
+        
         addTrade(optionTrade);
         // navigate to trade-list
         window.location.href = '/trade-list';
         
     }
-$: optionTrades;
   let optionTrade: OptionTrade = new OptionTrade();
   </script>
   

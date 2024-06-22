@@ -2,8 +2,8 @@
     import { onDestroy, onMount } from 'svelte';
     import { OptionTrade, TradeStatus, OptionTrades } from '../trade-detail/trade'
     import AddTrade from '../trade-detail/AddTrade.svelte';
-    import { DB_HOST, DB_PORT } from '../../lib/utils/db-host';
     import TradeItem from './TradeItem.svelte';
+    import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
 
     export let selectedDate: Date| undefined = undefined;
     let tradeList: OptionTrade[] = [];
@@ -44,6 +44,14 @@
             openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
             closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
             if(selectedDate) {
+                // filter out open trades up to the selected date
+                openTrades = openTrades.filter((trade) => {
+                    if(formatDate(new Date(trade.created_at)) == formatDate(selectedDate as Date)) {
+                        return true;
+                    } else {
+                        return (new Date(trade.created_at)) < (selectedDate as Date);
+                    }
+                });
                 // filter out closed trades of the selected date
                 closedTrades = closedTrades.filter((trade) => formatDate(new Date(trade.created_at)) == formatDate(selectedDate as Date));
             }
@@ -56,6 +64,9 @@
     let tradeUnsubscribe: any;
     onMount(() => {
 		console.log('TradeList mounted');
+        fetchAllOptionTrades().then(trade => {
+            console.log('All trades:', trade);
+        });
         initialize();
 		
 	});
