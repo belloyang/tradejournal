@@ -8,13 +8,16 @@
     function calculatePLPercentage() {
         return (trade.marketValue - trade.premium)*100 / trade.premium;
     }
+    function getTradeLabel(trade: OptionTrade) {
+        return `${trade.symbol} ${trade.strike} ${trade.optionType} ${trade.expirationDate}`;
+    }
 
 </script>
 
 <!-- display the summary of the trade -->
 <div class="container highlight-{calculatePL() >0 ? 'green':'blue'}" style="border-style: dotted; border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};"> 
     <!--e.g. SPY $100 CALL 20240101 -->
-     <label for="symbol" style="font-weight: bold;">{trade.symbol} ${trade.strike} {trade.optionType} {trade.expirationDate}</label>
+     <label for="symbol" style="font-weight: bold;">{getTradeLabel(trade)}</label>
      <div style="font-size: small;">
         <label for="quantity">Quantity:</label> <span>{trade.quantity}</span>
         <label for="marketValue">Market Value:</label> <span>${trade.marketValue}</span>
