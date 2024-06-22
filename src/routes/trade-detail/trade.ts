@@ -22,6 +22,7 @@ export class OptionTrade {
     premium: number;
     marketValue: number;
     status: TradeStatus;
+    created_at: string = '';
 
     constructor(
         symbol: string,
@@ -44,4 +45,4 @@ export class OptionTrade {
     }
 }
 
-export const optionTrades = writable<OptionTrade[]>([]);
+export const OptionTrades = writable<OptionTrade[]>([]);

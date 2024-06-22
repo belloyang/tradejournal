@@ -4,13 +4,14 @@
     import CurrentDate from './CurrentDate.svelte';
     import AddTrade from './trade-detail/AddTrade.svelte';
     import { onMount } from 'svelte';
-	import { DB_HOST, DB_PORT } from '../lib/utils/db-host';
-
+    import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
+	let allOptionTrades = [];
 	onMount(() => {
 		console.log('Home mounted');
-		fetch(`${DB_HOST}:${DB_PORT}/api/option_trades`)
-			.then(response => response.json())
-			.then(data => console.log(data));
+		fetchAllOptionTrades().then((trades) => {
+			allOptionTrades = trades;
+			console.log('All trades:', allOptionTrades);
+		});
 	});
 </script>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
+    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
 
     let selectedDate: Date = new Date();
     let tradeListInstance: any;

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade, TradeStatus } from '../trade-detail/trade'
+    import { OptionTrade, TradeStatus, OptionTrades } from '../trade-detail/trade'
     import AddTrade from '../trade-detail/AddTrade.svelte';
     import { DB_HOST, DB_PORT } from '../../lib/utils/db-host';
     import TradeItem from './TradeItem.svelte';
@@ -38,21 +38,22 @@
         return `${year}-${month}-${day}`;
     }
     function initialize() {
-        let apiURL = `${DB_HOST}:${DB_PORT}/api/option_trades`;
-        if(selectedDate !== undefined) {
-            apiURL = `${DB_HOST}:${DB_PORT}/api/option_trades?created_at=${formatDate(selectedDate)}`;
-        }
-        console.log('API URL:', apiURL);
-        fetch(apiURL).then(response => response.json())
-            .then(obj => {
-                tradeList = [...obj.data];
-                openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
-                closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
-                console.log("Trades of the day:", tradeList, selectedDate && selectedDate.toDateString());
-            });
-        modifierStr = modifier();
+        tradeUnsubscribe = OptionTrades.subscribe((value) => {
+            console.log('TradeList updated:', value);
+            tradeList = value;
+            openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
+            closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
+            if(selectedDate) {
+                // filter out closed trades of the selected date
+                closedTrades = closedTrades.filter((trade) => formatDate(new Date(trade.created_at)) == formatDate(selectedDate as Date));
+            }
+            console.log('Open trades:', openTrades);
+            console.log('Closed trades:', closedTrades);
+            modifierStr = modifier();
+        });
     }
 
+    let tradeUnsubscribe: any;
     onMount(() => {
 		console.log('TradeList mounted');
         initialize();
@@ -60,7 +61,7 @@
 	});
 
     onDestroy(() => {
-       
+       return tradeUnsubscribe();
     });
 
 </script>
@@ -70,7 +71,7 @@
     <meta name="description" content="Trade Records" /> 
 </svelte:head>
 
-<p>You have {tradeList.length} trade{tradeList.length<=1?'' : 's'} created {modifierStr}!</p>
+<p>You have {openTrades.length} open trade{openTrades.length<=1?'' : 's'} and {closedTrades.length} closed trade{closedTrades.length>=1?'':'s'} created {modifierStr}!</p>
 {#if tradeList.length > 0}
 <div class="container">
     <div class="trades" id="open-trades">
