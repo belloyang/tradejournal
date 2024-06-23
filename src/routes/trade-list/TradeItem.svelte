@@ -37,7 +37,7 @@
           <lable for="P/L Ratio">P/L: {calculatePLPercentage().toFixed(2)}%</lable>
       </div>
 </div>
-<TradeModal optionTrade={trade} show={showModal} onClose={closeModal} onCancel={closeModal}/>
+<TradeModal optionTrade={trade} show={showModal} onClose={closeModal} />
 
 <style>
     .highlight-green {

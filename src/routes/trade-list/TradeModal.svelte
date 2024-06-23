@@ -5,8 +5,7 @@
     import type { OptionTrade } from "../trade-detail/trade";
 
     export let show: Boolean = false;
-    export let onClose;
-    export let onCancel;
+    export let onClose: any;
 
     export let optionTrade: OptionTrade;
     
@@ -21,7 +20,7 @@
             console.error('Trade ID is not defined:', optionTrade);
             return;
         }
-        show = false;
+        onClose();
         //update the optionTrade in DB
         fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/`+ trade_id, {
             method: 'PUT',
@@ -37,7 +36,7 @@
     }
     function cancel() {
         console.log('Cancel Editing');
-        show = false;
+        onClose();
         optionTrade = originalTrade;
     }
 
