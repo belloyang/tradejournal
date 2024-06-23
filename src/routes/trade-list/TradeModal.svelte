@@ -1,5 +1,6 @@
 <script lang="ts">
-    import Page from "../+page.svelte";
+    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
+    
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
     import type { OptionTrade } from "../trade-detail/trade";
 
@@ -11,8 +12,25 @@
     let editing = false;
 
     function save() {
-        console.log('Save', optionTrade);
+        console.log('Saving', optionTrade);
+        const trade_id = (optionTrade as any).id;
+        if(trade_id === undefined) {
+            console.error('Trade ID is not defined:', optionTrade);
+            return;
+        }
         show = false;
+        //update the optionTrade in DB
+        fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/`+ trade_id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({...optionTrade, updated_at: new Date()})
+        }).then((response) => {
+            console.log('Trade saved:', response);
+        }).catch((error) => {
+            console.error('Error saving trade:', error);
+        });
     }
 
     function handleDetailChange(event: CustomEvent) {

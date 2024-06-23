@@ -53,6 +53,16 @@ app.post('/api/option_trades', (req, res) => {
   res.json({ id: result.lastInsertRowid });
 });
 
+app.put('/api/option_trades/:id', (req, res) => {
+  const { id } = req.params;
+  const { symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at } = req.body;
+  console.log("PUT to /api/option_trades", req.body);
+  const stmt = db.prepare(`UPDATE option_trades SET symbol = ?,  optionType = ?, tradeType = ?, strike = ?, expirationDate = ?, quantity = ?, premium = ?, marketValue = ?, status = ?, created_at = ?, updated_at = ? WHERE id = ?`);
+  const result = stmt.run(symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at, id);
+  res.json({ id: result.lastInsertRowid });
+  }
+);
+
 app.listen(DB_PORT, () => {
   console.log(`Server running at ${DB_HOST}:${DB_PORT}/`);
 });

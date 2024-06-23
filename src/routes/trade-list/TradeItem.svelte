@@ -23,7 +23,7 @@
 </script>
 
 <!-- display the summary of the trade -->
-<div class="container highlight-{calculatePL() >0 ? 'green':'blue'}" style="border-size:1px border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};" 
+<div class="container highlight-{calculatePL() >= 0 ? 'green':'red'}" style="border-size:1px border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};" 
      role="button" tabindex="0" on:click={openModal} on:keydown={openModal}> 
      <!--e.g. SPY $100 CALL 20240101 -->
       <label for="symbol" style="font-weight: bold;">{getTradeLabel(trade)}</label>
