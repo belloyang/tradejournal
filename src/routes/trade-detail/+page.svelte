@@ -1,5 +1,5 @@
 <script>
-    import Trade from "./Trade.svelte"
+    import AddTrade from "./AddTrade.svelte";
 
 </script>
 <svelte:head>
@@ -10,6 +10,6 @@
 <div class="text-column">
 	<h1>Trade Details</h1>
 
-    <Trade />
+    <AddTrade />
 
 </div>

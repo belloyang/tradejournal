@@ -2,7 +2,7 @@
     import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
     import { fetchAllOptionTrades } from "$lib/utils/fetch-trades";
     import TradeDetail from "./TradeDetail.svelte";
-    import { OptionTrade, TradeStatus, OptionTrades } from "./trade";
+    import { OptionTrade, TradeStatus, OptionTrades, OptionType, TradeType } from "./trade";
      
     let trades = [];
     async function addTrade(trade: OptionTrade) {
@@ -28,16 +28,17 @@
         window.location.href = '/trade-list';
         
     }
-  let optionTrade: OptionTrade = new OptionTrade();
+  let optionTrade: OptionTrade = new OptionTrade('', OptionType.CALL, TradeType.BUY,100, '', 1, 1.0, TradeStatus.OPEN);
   </script>
   
 
   
   <form on:submit|preventDefault={handleSubmit}>
     <TradeDetail {optionTrade} />
-    
     <br/>
-    <button type="submit">Submit</button>
+    <div class="row">
+      <button on:click={() =>window.location.href='/'}>Cancel</button><button type="submit">Submit</button>
+    </div>
   </form>
 
   <style>
@@ -47,14 +48,13 @@
       max-width: 500px;
       margin: 0 auto;
     }
-    label {
-      margin: 10px 0 5px;
+    .row {
+      display: flex;
+      justify-content: center;
     }
-    input {
-      padding: 8px;
-      margin-bottom: 10px;
-    }
+  
     button {
+      margin: 0.1em;
       padding: 10px;
       background-color: #007bff;
       color: white;
