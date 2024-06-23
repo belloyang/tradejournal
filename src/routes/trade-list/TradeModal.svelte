@@ -1,18 +1,25 @@
 <script lang="ts">
+    import Page from "../+page.svelte";
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
+    import type { OptionTrade } from "../trade-detail/trade";
 
     export let show: Boolean = false;
     export let onClose;
     export let onCancel;
 
-    export let optionTrade;
+    export let optionTrade: OptionTrade;
     let editing = false;
 
     function save() {
-        console.log('Save');
+        console.log('Save', optionTrade);
         show = false;
     }
 
+    function handleDetailChange(event: CustomEvent) {
+        console.log('HandleDetailChange:', event.detail);
+        optionTrade = event.detail;
+    
+    }
 </script>
 
 {#if show} 
@@ -25,7 +32,7 @@
                 <button class="close" on:click={() => editing = true }><img src="/edit.svg" alt="Editing"></button>
             {/if}
             <br/>
-            <TradeDetail {editing} {optionTrade}/>
+            <TradeDetail {editing} {optionTrade} on:detailChange={handleDetailChange}/>
             <br/>
             <button class="close" on:click={() => show = false} on:keydown={(event) => {if (event.key === 'Enter') show = false;}}>Cancel</button>
             </div>

@@ -1,10 +1,15 @@
 <script lang="ts" >
-    import { TradeStatus } from "./trade";
+    import { createEventDispatcher } from "svelte";
+    import { OptionTrade, TradeStatus } from "./trade";
 
-    export let optionTrade;
+    export let optionTrade: OptionTrade;
     export let editing = false;
 
-    
+    let dispatch = createEventDispatcher();
+    function triggerDetailChange() {
+        console.log('triggerDetailChange');
+        dispatch('detailChange',optionTrade);
+    }
 </script>
 
 <div>
@@ -12,7 +17,7 @@
     <div class="row">
     <label for="symbol">Symbol</label>
     {#if editing}
-    <input type="text" id="symbol" bind:value={optionTrade.symbol} required/>
+    <input type="text" id="symbol" bind:value={optionTrade.symbol} required on:change={triggerDetailChange}/>
     {:else}
     <span>{optionTrade.symbol}</span>
     {/if}
@@ -20,7 +25,7 @@
     <div class="row">
     <label for="quantity">Quantity</label>
     {#if editing}
-    <span><input type="number" id="quantity" min="0" bind:value={optionTrade.quantity} required /> contract{optionTrade.quantity>1?"s":""}</span>
+    <span><input type="number" id="quantity" min="0" bind:value={optionTrade.quantity} required on:change={triggerDetailChange}/> contract{optionTrade.quantity>1?"s":""}</span>
     {:else}
     <span>{optionTrade.quantity} contract{optionTrade.quantity>1?"s":""}</span>
     {/if}
@@ -28,7 +33,7 @@
     <div class="row">
     <label for="tradeType">Trade Type</label>
     {#if editing}
-    <select id="tradeType" bind:value={optionTrade.tradeType}>
+    <select id="tradeType" bind:value={optionTrade.tradeType} on:change={triggerDetailChange}>
       <option value="Buy">Buy</option>
       <option value="Sell">Sell</option>
     </select>
@@ -39,7 +44,7 @@
     <div class="row">
     <label for="optionType">Option Type</label>
     {#if editing}
-    <select id="optionType" bind:value={optionTrade.optionType}>
+    <select id="optionType" bind:value={optionTrade.optionType} on:change={triggerDetailChange}>
       <option value="Call">Call</option>
       <option value="Put">Put</option>
     </select>
@@ -50,7 +55,7 @@
     <div class="row">
     <label for="strike">Strike Price</label>
     {#if editing}
-    <span>$<input type="number" id="strike" bind:value={optionTrade.strike} required /></span>
+    <span>$<input type="number" id="strike" bind:value={optionTrade.strike} required on:change={triggerDetailChange}/></span>
     {:else}
     <span>${optionTrade.strike}</span>
     {/if}
@@ -58,7 +63,7 @@
     <div class="row">
     <label for="expirationDate">Expiration Date</label>
     {#if editing}
-    <input type="date" id="expirationDate" bind:value={optionTrade.expirationDate} required />
+    <input type="date" id="expirationDate" bind:value={optionTrade.expirationDate} required on:change={triggerDetailChange}/>
     {:else}
     <span>{optionTrade.expirationDate}</span>
     {/if}
@@ -66,7 +71,7 @@
     <div class="row">
     <label for="premium">Premium</label>
     {#if editing}
-    <span>$<input type="number" step="0.01" min=0 id="premium" bind:value={optionTrade.premium} required /></span>
+    <span>$<input type="number" step="0.01" min=0 id="premium" bind:value={optionTrade.premium} required on:change={triggerDetailChange}/></span>
     {:else}
     <span>${optionTrade.premium}</span>
     {/if}
@@ -74,7 +79,7 @@
     <div class="row">
     <label for="marketValue">Market Value</label>
     {#if editing}
-    <span>$<input type="number" step="0.01" min=0 id="marketValue" bind:value={optionTrade.marketValue} required /></span>
+    <span>$<input type="number" step="0.01" min=0 id="marketValue" bind:value={optionTrade.marketValue} required on:change={triggerDetailChange}/></span>
     {:else}
     <span>${optionTrade.marketValue}</span>
     {/if}
@@ -82,7 +87,7 @@
     <div class="row">
     <label for="status">Status</label>
     {#if editing}
-    <select id="status" bind:value={optionTrade.status}>
+    <select id="status" bind:value={optionTrade.status} on:change={triggerDetailChange}>
       <option value={TradeStatus.OPEN}>OPEN</option>
       <option value={TradeStatus.CLOSED}>CLOSED</option>
     </select>
