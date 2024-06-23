@@ -9,6 +9,9 @@
     export let onCancel;
 
     export let optionTrade: OptionTrade;
+    
+    const originalTrade = optionTrade;
+
     let editing = false;
 
     function save() {
@@ -32,6 +35,11 @@
             console.error('Error saving trade:', error);
         });
     }
+    function cancel() {
+        console.log('Cancel Editing');
+        show = false;
+        optionTrade = originalTrade;
+    }
 
     function handleDetailChange(event: CustomEvent) {
         console.log('HandleDetailChange:', event.detail);
@@ -52,7 +60,7 @@
             <br/>
             <TradeDetail {editing} {optionTrade} on:detailChange={handleDetailChange}/>
             <br/>
-            <button class="close" on:click={() => show = false} on:keydown={(event) => {if (event.key === 'Enter') show = false;}}>Cancel</button>
+            <button class="close" on:click={cancel} on:keydown={cancel}>Cancel</button>
             </div>
         </div>
     </div>

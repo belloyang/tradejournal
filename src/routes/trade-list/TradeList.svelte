@@ -53,7 +53,14 @@
                     }
                 });
                 // filter out closed trades of the selected date
-                closedTrades = closedTrades.filter((trade) => formatDate(new Date(trade.created_at)) == formatDate(selectedDate as Date));
+                closedTrades = closedTrades.filter((trade) => {
+                    if(formatDate(new Date(trade.created_at)) == formatDate(selectedDate as Date) ||
+                    formatDate(new Date(trade.updated_at)) == formatDate(selectedDate as Date)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
             }
             console.log('Open trades:', openTrades);
             console.log('Closed trades:', closedTrades);

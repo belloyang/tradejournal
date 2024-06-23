@@ -23,6 +23,7 @@ export class OptionTrade {
     marketValue: number;
     status: TradeStatus;
     created_at: string = '';
+    updated_at: string = '';
 
     constructor(
         symbol: string,
