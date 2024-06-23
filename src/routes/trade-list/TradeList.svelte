@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
     import { OptionTrade, TradeStatus, OptionTrades } from '../trade-detail/trade'
-    import AddTrade from '../trade-detail/AddTrade.svelte';
+    import AddTradeButton from '../trade-detail/AddTradeButton.svelte';
     import TradeItem from './TradeItem.svelte';
     import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
 
@@ -117,7 +117,7 @@
   </div>
 {/if}
 
-<AddTrade />
+<AddTradeButton />
 
 <style>
    .container {

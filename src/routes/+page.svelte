@@ -2,7 +2,7 @@
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
     import CurrentDate from './CurrentDate.svelte';
-    import AddTrade from './trade-detail/AddTrade.svelte';
+    import AddTradeButton from './trade-detail/AddTradeButton.svelte';
     import { onMount } from 'svelte';
     import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
 	let allOptionTrades = [];
@@ -34,7 +34,7 @@
 	</h1>
 	<CurrentDate />
 
-	<AddTrade />
+	<AddTradeButton />
 </section>
 
 

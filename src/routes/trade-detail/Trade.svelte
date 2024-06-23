@@ -1,6 +1,7 @@
 <script lang="ts">
     import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
     import { fetchAllOptionTrades } from "$lib/utils/fetch-trades";
+    import TradeDetail from "./TradeDetail.svelte";
     import { OptionTrade, TradeStatus, OptionTrades } from "./trade";
      
     let trades = [];
@@ -33,34 +34,8 @@
 
   
   <form on:submit|preventDefault={handleSubmit}>
-    <label for="symbol">Symbol</label>
-    <input type="text" id="symbol" bind:value={optionTrade.symbol} required />
-    <label for="quantity">Quantity</label>
-    <div><input type="number" id="quantity" min="0" bind:value={optionTrade.quantity} required /> contract{optionTrade.quantity>1?"s":""}</div>
-    <label for="tradeType">Trade Type</label>
-    <select id="tradeType" bind:value={optionTrade.tradeType}>
-      <option value="Buy">Buy</option>
-      <option value="Sell">Sell</option>
-    </select>
-
-    <label for="optionType">Option Type</label>
-    <select id="optionType" bind:value={optionTrade.optionType}>
-      <option value="Call">Call</option>
-      <option value="Put">Put</option>
-    </select>
-    <label for="strike">Strike Price</label>
-    <div>$<input type="number" id="strike" bind:value={optionTrade.strike} required /></div>
-    <label for="expirationDate">Expiration Date</label>
-    <input type="date" id="expirationDate" bind:value={optionTrade.expirationDate} required />
-    <label for="premium">Premium</label>
-    <div>$<input type="number" step="0.01" min=0 id="premium" bind:value={optionTrade.premium} required /></div>
-    <label for="marketValue">Market Value</label>
-    <div>$<input type="number" step="0.01" min=0 id="marketValue" bind:value={optionTrade.marketValue} required /></div>
-    <label for="status">Status</label>
-    <select id="status" bind:value={optionTrade.status}>
-      <option value={TradeStatus.OPEN}>OPEN</option>
-      <option value={TradeStatus.CLOSED}>CLOSED</option>
-    </select>
+    <TradeDetail {optionTrade} />
+    
     <br/>
     <button type="submit">Submit</button>
   </form>
@@ -69,7 +44,7 @@
     form {
       display: flex;
       flex-direction: column;
-      max-width: 300px;
+      max-width: 500px;
       margin: 0 auto;
     }
     label {
