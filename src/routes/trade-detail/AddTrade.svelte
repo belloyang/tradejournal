@@ -34,7 +34,7 @@
 
   
   <form on:submit|preventDefault={handleSubmit}>
-    <TradeDetail {optionTrade} />
+    <TradeDetail {optionTrade} editing={true}/>
     <br/>
     <div class="row">
       <button on:click={() =>window.location.href='/'}>Cancel</button><button type="submit">Submit</button>
