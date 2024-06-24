@@ -33,8 +33,8 @@
           <label for="premium">Premium:</label> <span>${trade.premium}</span>
       </div>
       <div style="font-size: small;">
-          <lable for="P/L">P/L: ${calculatePL().toFixed(2)}</lable>
-          <lable for="P/L Ratio">P/L: {calculatePLPercentage().toFixed(2)}%</lable>
+          <lable for="P/L" style="font-weight: bold;">P/L: ${calculatePL().toFixed(2)}</lable>
+          <lable for="P/L Ratio" style="font-weight: bold;">P/L Ratio: {calculatePLPercentage().toFixed(2)}%</lable>
       </div>
 </div>
 <TradeModal optionTrade={trade} show={showModal} onClose={closeModal} />

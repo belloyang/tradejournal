@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade, TradeStatus, OptionTrades } from '../trade-detail/trade'
+    import { OptionTrade, TradeStatus, OptionTrades, TradeType } from '../trade-detail/trade'
     import AddTradeButton from '../trade-detail/AddTradeButton.svelte';
     import TradeItem from './TradeItem.svelte';
     import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
@@ -21,7 +21,6 @@
 
 
     function modifier(): string {
-        console.log("modifier", selectedDate);
         if(selectedDate === undefined) {
             return "in total";
         } else if(selectedDate.toDateString() == new Date().toDateString()) {
@@ -67,7 +66,34 @@
             modifierStr = modifier();
         });
     }
+    function calcPL(trade: OptionTrade) {
+        return (trade.marketValue - trade.premium) * trade.quantity * (trade.tradeType == TradeType.BUY ? 1 : -1) * 100;
+    }
 
+    function calcRealizedPL() {
+        let realizedPL = 0;
+        closedTrades.forEach((trade) => {
+            realizedPL += calcPL(trade);
+        });
+        return realizedPL;
+    }
+    function calcUnrealizedPL() {
+        let unrealizedPL = 0;
+        openTrades.forEach((trade) => {
+            unrealizedPL += calcPL(trade);
+        });
+        return unrealizedPL;
+    }
+
+    function getNumOfWinningTrades() {
+        let numOfWinningTrades = 0;
+        closedTrades.forEach((trade) => {
+            if(calcPL(trade) > 0) {
+                numOfWinningTrades++;
+            }
+        });
+        return numOfWinningTrades;
+    }
     let tradeUnsubscribe: any;
     onMount(() => {
 		console.log('TradeList mounted');
@@ -123,10 +149,33 @@
     </div>
   </div>
 {/if}
-
+<div>You have {getNumOfWinningTrades()} winning trade{getNumOfWinningTrades() <=1 ?'':'s'} out of {closedTrades.length} closed trades {modifier()}</div>
+<div>
+    <div class="{calcRealizedPL()>=0?'green':'red'}-dot"></div><label for="realized-pl">Realized P/L: ${calcRealizedPL().toFixed(2)}</label>
+</div>
+<div>
+    <div class="{calcUnrealizedPL()>=0?'green':'red'}-dot"></div><label for="realized-pl">Unrealized P/L: ${calcUnrealizedPL().toFixed(2)}</label>
+</div>
+<br/>
 <AddTradeButton />
 
 <style>
+    .red-dot {
+      margin: 0.2em;
+      width: 10px; /* width of the dot */
+      height: 10px; /* height of the dot */
+      background-color: red; /* color of the dot */
+      border-radius: 50%; /* make it a circle */
+      display: inline-block; /* make it inline for better positioning */
+    }
+    .green-dot {
+      margin: 0.2em;
+      width: 10px; /* width of the dot */
+      height: 10px; /* height of the dot */
+      background-color: green; /* color of the dot */
+      border-radius: 50%; /* make it a circle */
+      display: inline-block; /* make it inline for better positioning */
+    }
    .container {
     display: flex;
     justify-content: space-between;

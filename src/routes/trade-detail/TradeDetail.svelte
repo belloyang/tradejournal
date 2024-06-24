@@ -1,6 +1,6 @@
 <script lang="ts" >
     import { createEventDispatcher } from "svelte";
-    import { OptionTrade, TradeStatus } from "./trade";
+    import { OptionTrade, OptionType, TradeStatus, TradeType } from "./trade";
 
     export let optionTrade: OptionTrade;
     export let editing = false;
@@ -34,8 +34,8 @@
     <label for="tradeType">Trade Type</label>
     {#if editing}
     <select id="tradeType" bind:value={optionTrade.tradeType} on:change={triggerDetailChange}>
-      <option value="Buy">Buy</option>
-      <option value="Sell">Sell</option>
+      <option value={TradeType.BUY}>Buy</option>
+      <option value={TradeType.SELL}>Sell</option>
     </select>
     {:else}
     <span>{optionTrade.tradeType}</span>
@@ -45,8 +45,8 @@
     <label for="optionType">Option Type</label>
     {#if editing}
     <select id="optionType" bind:value={optionTrade.optionType} on:change={triggerDetailChange}>
-      <option value="Call">Call</option>
-      <option value="Put">Put</option>
+      <option value={OptionType.CALL}>Call</option>
+      <option value={OptionType.PUT}>Put</option>
     </select>
     {:else}
     <span>{optionTrade.optionType}</span>
