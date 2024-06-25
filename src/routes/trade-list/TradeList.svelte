@@ -97,6 +97,7 @@
         });
         return numOfWinningTrades;
     }
+    $: nWiningTrades = getNumOfWinningTrades();
     function handleDetailChange(event: CustomEvent) {
         console.log('HandleDetailChange:', event.detail);
         const updatedTrade = event.detail;
@@ -106,6 +107,7 @@
         // update PL
         realizedPL = calcRealizedPL();
         unrealizedPL = calcUnrealizedPL();
+        nWiningTrades = getNumOfWinningTrades();
     }
 
     let tradeUnsubscribe: any;
@@ -163,7 +165,7 @@
     </div>
   </div>
 {/if}
-<div>You have {getNumOfWinningTrades()} winning trade{getNumOfWinningTrades() <=1 ?'':'s'} out of {closedTrades.length} closed trades {modifier()}</div>
+<div>You have {nWiningTrades} winning trade{nWiningTrades <= 1 ?'':'s'} out of {closedTrades.length} closed trades {modifier()}</div>
 <div>
     <div class="{realizedPL>=0?'green':'red'}-dot"></div><label for="realized-pl">Realized P/L: ${realizedPL.toFixed(2)}</label>
 </div>
