@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
     import { TradeStatus, type OptionTrade } from "../trade-detail/trade";
     import TradeModal from "./TradeModal.svelte";
 
@@ -6,9 +7,11 @@
     function calculatePL() {
         return (trade.marketValue - trade.premium)*100;
     }
+    $: pl = calculatePL();
     function calculatePLPercentage() {
         return (trade.marketValue - trade.premium)*100 / trade.premium;
     }
+    $: plPercentage = calculatePLPercentage();
     function getTradeLabel(trade: OptionTrade) {
         return `${trade.symbol} ${trade.strike} ${trade.optionType} ${trade.expirationDate}`;
     }
@@ -20,10 +23,27 @@
     function closeModal() {
         showModal = false;
     }
+    function handleDetailChange(event: CustomEvent) {
+        console.log('HandleDetailChange:', event.detail);
+        trade = event.detail;
+        pl = calculatePL();
+        plPercentage = calculatePLPercentage();
+        triggerDetailChange();
+    }
+
+    const dispatch = createEventDispatcher();
+    function triggerDetailChange() {
+        console.log('triggerDetailChange', trade);
+        const event = new CustomEvent('detailChange', {
+            detail: trade
+        });
+        dispatch('detailChange', trade);
+    }
+
 </script>
 
 <!-- display the summary of the trade -->
-<div class="container highlight-{calculatePL() >= 0 ? 'green':'red'}" style="border-size:1px border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};" 
+<div class="container highlight-{pl >= 0 ? 'green':'red'}" style="border-size:1px border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};" 
      role="button" tabindex="0" on:click={openModal} on:keydown={openModal}> 
      <!--e.g. SPY $100 CALL 20240101 -->
       <label for="symbol" style="font-weight: bold;">{getTradeLabel(trade)}</label>
@@ -33,11 +53,11 @@
           <label for="premium">Premium:</label> <span>${trade.premium}</span>
       </div>
       <div style="font-size: small;">
-          <lable for="P/L" style="font-weight: bold;">P/L: ${calculatePL().toFixed(2)}</lable>
-          <lable for="P/L Ratio" style="font-weight: bold;">P/L Ratio: {calculatePLPercentage().toFixed(2)}%</lable>
+          <lable for="P/L" style="font-weight: bold;">P/L: ${pl.toFixed(2)}</lable>
+          <lable for="P/L Ratio" style="font-weight: bold;">P/L Ratio: {pl.toFixed(2)}%</lable>
       </div>
 </div>
-<TradeModal optionTrade={trade} show={showModal} onClose={closeModal} />
+<TradeModal optionTrade={trade} on:detailChange={handleDetailChange} show={showModal} onClose={closeModal} />
 
 <style>
     .highlight-green {

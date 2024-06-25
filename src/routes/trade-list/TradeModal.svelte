@@ -1,5 +1,6 @@
 <script lang="ts">
     import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
+    import { createEventDispatcher } from "svelte";
     
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
     import type { OptionTrade } from "../trade-detail/trade";
@@ -30,6 +31,7 @@
             body: JSON.stringify({...optionTrade, updated_at: new Date()})
         }).then((response) => {
             console.log('Trade saved:', response);
+            triggerDetailChange();
         }).catch((error) => {
             console.error('Error saving trade:', error);
         });
@@ -45,6 +47,14 @@
         optionTrade = event.detail;
     
     }
+    const dispatch = createEventDispatcher();
+    function triggerDetailChange() {
+        console.log('triggerDetailChange');
+        const event = new CustomEvent('detailChange', {
+            detail: optionTrade
+        });
+        dispatch('detailChange',optionTrade);
+    }   
 </script>
 
 {#if show} 

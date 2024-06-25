@@ -61,11 +61,11 @@
                     }
                 });
             }
-            console.log('Open trades:', openTrades);
-            console.log('Closed trades:', closedTrades);
+            
             modifierStr = modifier();
         });
     }
+
     function calcPL(trade: OptionTrade) {
         return (trade.marketValue - trade.premium) * trade.quantity * (trade.tradeType == TradeType.BUY ? 1 : -1) * 100;
     }
@@ -77,6 +77,8 @@
         });
         return realizedPL;
     }
+    $: realizedPL = calcRealizedPL();
+
     function calcUnrealizedPL() {
         let unrealizedPL = 0;
         openTrades.forEach((trade) => {
@@ -84,6 +86,7 @@
         });
         return unrealizedPL;
     }
+    $: unrealizedPL = calcUnrealizedPL();
 
     function getNumOfWinningTrades() {
         let numOfWinningTrades = 0;
@@ -94,6 +97,17 @@
         });
         return numOfWinningTrades;
     }
+    function handleDetailChange(event: CustomEvent) {
+        console.log('HandleDetailChange:', event.detail);
+        const updatedTrade = event.detail;
+        const index = tradeList.findIndex((trade: any) => trade.id == updatedTrade.id);
+        tradeList[index] = updatedTrade;
+        OptionTrades.set(tradeList);
+        // update PL
+        realizedPL = calcRealizedPL();
+        unrealizedPL = calcUnrealizedPL();
+    }
+
     let tradeUnsubscribe: any;
     onMount(() => {
 		console.log('TradeList mounted');
@@ -124,7 +138,7 @@
         {#if openTrades.length > 0}
           {#each openTrades as trade}
             <li>
-              <TradeItem {trade} />
+              <TradeItem {trade} on:detailChange={handleDetailChange} />
             </li>
           {/each}
         {:else}
@@ -139,8 +153,8 @@
         {#if closedTrades.length > 0}
           {#each closedTrades as trade}
             <li>
-              <TradeItem {trade} />
-            </li>
+              <TradeItem {trade} on:detailChange={handleDetailChange} />
+            </li>   
           {/each}
         {:else}
           <li class="no-trades">No closed trades</li>
@@ -151,10 +165,10 @@
 {/if}
 <div>You have {getNumOfWinningTrades()} winning trade{getNumOfWinningTrades() <=1 ?'':'s'} out of {closedTrades.length} closed trades {modifier()}</div>
 <div>
-    <div class="{calcRealizedPL()>=0?'green':'red'}-dot"></div><label for="realized-pl">Realized P/L: ${calcRealizedPL().toFixed(2)}</label>
+    <div class="{realizedPL>=0?'green':'red'}-dot"></div><label for="realized-pl">Realized P/L: ${realizedPL.toFixed(2)}</label>
 </div>
 <div>
-    <div class="{calcUnrealizedPL()>=0?'green':'red'}-dot"></div><label for="realized-pl">Unrealized P/L: ${calcUnrealizedPL().toFixed(2)}</label>
+    <div class="{unrealizedPL>=0?'green':'red'}-dot"></div><label for="realized-pl">Unrealized P/L: ${unrealizedPL.toFixed(2)}</label>
 </div>
 <br/>
 <AddTradeButton />
