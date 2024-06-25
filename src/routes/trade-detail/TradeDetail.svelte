@@ -55,7 +55,7 @@
     <div class="row">
     <label for="strike">Strike Price</label>
     {#if editing}
-    <span>$<input type="number" id="strike" bind:value={optionTrade.strike} required on:change={triggerDetailChange}/></span>
+    <span>$<input type="number" id="strike" step="0.5" bind:value={optionTrade.strike} required on:change={triggerDetailChange}/></span>
     {:else}
     <span>${optionTrade.strike}</span>
     {/if}

@@ -22,6 +22,7 @@
             return;
         }
         onClose();
+        editing = false;
         //update the optionTrade in DB
         fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/`+ trade_id, {
             method: 'PUT',
@@ -39,6 +40,7 @@
     function cancel() {
         console.log('Cancel Editing');
         onClose();
+        editing = false;
         optionTrade = originalTrade;
     }
 
@@ -62,7 +64,7 @@
         <div class="modal-content">
             <div class="column">
             {#if editing}
-                <button class="close" on:click={() => save()}><img src="/save.svg" alt="Save"></button>
+                <button class="close" on:click={save}><img src="/save.svg" alt="Save"></button>
             {:else}
                 <button class="close" on:click={() => editing = true }><img src="/edit.svg" alt="Editing"></button>
             {/if}
