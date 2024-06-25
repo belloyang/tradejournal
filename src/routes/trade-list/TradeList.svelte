@@ -61,6 +61,10 @@
                     }
                 });
             }
+            // update PL and number of winning trades
+            realizedPL = calcRealizedPL();
+            unrealizedPL = calcUnrealizedPL();
+            nWiningTrades = getNumOfWinningTrades();
             
             modifierStr = modifier();
         });
@@ -104,10 +108,7 @@
         const index = tradeList.findIndex((trade: any) => trade.id == updatedTrade.id);
         tradeList[index] = updatedTrade;
         OptionTrades.set(tradeList);
-        // update PL
-        realizedPL = calcRealizedPL();
-        unrealizedPL = calcUnrealizedPL();
-        nWiningTrades = getNumOfWinningTrades();
+        
     }
 
     let tradeUnsubscribe: any;
