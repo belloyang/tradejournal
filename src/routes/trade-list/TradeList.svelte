@@ -37,6 +37,9 @@
         return `${year}-${month}-${day}`;
     }
     function initialize() {
+        if(tradeUnsubscribe) {// unsubscribe if there is any
+            tradeUnsubscribe();
+        }
         tradeUnsubscribe = OptionTrades.subscribe((value) => {
             console.log('TradeList updated:', value);
             tradeList = value;
@@ -166,7 +169,7 @@
     </div>
   </div>
 {/if}
-<div>You have {nWiningTrades} winning trade{nWiningTrades <= 1 ?'':'s'} out of {closedTrades.length} closed trades {modifier()}</div>
+<div>You have {nWiningTrades} winning trade{nWiningTrades <= 1 ?'':'s'} out of {closedTrades.length} closed trades {modifierStr}</div>
 <div>
     <div class="{realizedPL>=0?'green':'red'}-dot"></div><label for="realized-pl">Realized P/L: ${realizedPL.toFixed(2)}</label>
 </div>
