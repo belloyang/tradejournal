@@ -11,6 +11,6 @@
 <div class="text-column">
 	<h1>Trade Records</h1>
 
-    <TradeList />
+    <TradeList selectedDate={new Date()}/>
 
 </div>
