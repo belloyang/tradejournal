@@ -2,7 +2,7 @@
     import { createEventDispatcher } from "svelte";
     import { TradeStatus, type OptionTrade } from "../trade-detail/trade";
     import TradeModal from "./TradeModal.svelte";
-    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
+    import { deleteTrade } from "$lib/utils/db-api";
 
     export let trade: OptionTrade;
     function calculatePL() {
@@ -56,9 +56,7 @@
       if (window.confirm(`Do you want to delete the trade "${getTradeLabel(trade)}"?`)) {
         // Perform the action if the user confirms
         // delete the trade
-        fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/${(trade as any).id}`, {
-            method: 'DELETE'
-        }).then((response) => {
+        deleteTrade(trade).then((response) => {
             console.log('Trade deleted:', response);
             triggerTradeDeleted();
         }).catch((error) => {
@@ -69,7 +67,7 @@
         // Handle the case where the user cancels
         console.log("Delete Canceled!")
       }
-    }, 500); // 1000 ms = 1 second
+    }, 500); // 0.5s
   }
 
   function handleMouseUp() {

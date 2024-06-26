@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
     import { createEventDispatcher } from "svelte";
     
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
     import type { OptionTrade } from "../trade-detail/trade";
+    import { updateTrade } from "$lib/utils/db-api";
 
     export let show: Boolean = false;
     export let onClose: any;
@@ -23,14 +23,8 @@
         }
         onClose();
         editing = false;
-        //update the optionTrade in DB
-        fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/`+ trade_id, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({...optionTrade, updated_at: new Date()})
-        }).then((response) => {
+        
+        updateTrade(optionTrade).then((response) => {
             console.log('Trade saved:', response);
             triggerDetailChange();
         }).catch((error) => {

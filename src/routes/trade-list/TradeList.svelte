@@ -3,7 +3,7 @@
     import { OptionTrade, TradeStatus, OptionTrades, TradeType } from '../trade-detail/trade'
     import AddTradeButton from '../trade-detail/AddTradeButton.svelte';
     import TradeItem from './TradeItem.svelte';
-    import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
+    import { fetchAllOptionTrades } from '$lib/utils/db-api';
 
     export let selectedDate: Date| undefined = undefined;
     let tradeList: OptionTrade[] = [];

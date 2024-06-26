@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import db from './database';
-import { DB_HOST, DB_PORT } from '$lib/utils/db-host';
+import { DB_HOST, DB_PORT } from '$lib/utils/db-info';
 
 const app = express();
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
-    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
+    import { DB_HOST, DB_PORT } from "$lib/utils/db-info";
 
     let selectedDate: Date| undefined = new Date();
     function nextDaySummary() {

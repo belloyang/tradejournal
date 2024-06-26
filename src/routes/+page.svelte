@@ -4,7 +4,7 @@
     import CurrentDate from './CurrentDate.svelte';
     import AddTradeButton from './trade-detail/AddTradeButton.svelte';
     import { onMount } from 'svelte';
-    import { fetchAllOptionTrades } from '$lib/utils/fetch-trades';
+    import { fetchAllOptionTrades } from '$lib/utils/db-api';
 	let allOptionTrades = [];
 	onMount(() => {
 		console.log('Home mounted');

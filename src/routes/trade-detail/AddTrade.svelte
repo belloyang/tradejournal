@@ -1,29 +1,19 @@
 <script lang="ts">
-    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
-    import { fetchAllOptionTrades } from "$lib/utils/fetch-trades";
+    import { addTrade } from "$lib/utils/db-api";
     import TradeDetail from "./TradeDetail.svelte";
     import { OptionTrade, TradeStatus, OptionTrades, OptionType, TradeType } from "./trade";
      
     let trades = [];
-    async function addTrade(trade: OptionTrade) {
-    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/option_trades`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({...trade, created_at: new Date(), updated_at: new Date()})
-    });
-    const newTrade = await response.json();
-
-    console.log('Trade added:', newTrade);
-   
-   }
 
     function handleSubmit() {
         console.log(`submit trade @${new Date().toDateString()}:`, optionTrade, );
         // Here, you can add your form submission logic, e.g., sending data to a server.
         
-        addTrade(optionTrade);
+        addTrade(optionTrade).then((response) => {
+            console.log('Trade added:', response);
+        }).catch((error) => {
+            console.error('Error adding trade:', error);
+        });
         // navigate to trade-list
         window.location.href = '/trade-list';
         
