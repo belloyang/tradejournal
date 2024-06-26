@@ -113,6 +113,13 @@
         OptionTrades.set(tradeList);
         
     }
+    function handleTradeDeleted(event: CustomEvent) {
+        console.log('HandleTradeDeleted:', event.detail);
+        const deletedTrade = event.detail;
+        const index = tradeList.findIndex((trade: any) => trade.id == deletedTrade.id);
+        tradeList.splice(index, 1);
+        OptionTrades.set(tradeList);
+    }
 
     let tradeUnsubscribe: any;
     onMount(() => {
@@ -144,7 +151,7 @@
         {#if openTrades.length > 0}
           {#each openTrades as trade}
             <li>
-              <TradeItem {trade} on:detailChange={handleDetailChange} />
+              <TradeItem {trade} on:detailChange={handleDetailChange} on:tradeDeleted={handleTradeDeleted}/>
             </li>
           {/each}
         {:else}
@@ -159,7 +166,7 @@
         {#if closedTrades.length > 0}
           {#each closedTrades as trade}
             <li>
-              <TradeItem {trade} on:detailChange={handleDetailChange} />
+              <TradeItem {trade} on:detailChange={handleDetailChange} on:tradeDeleted={handleTradeDeleted}/>
             </li>   
           {/each}
         {:else}

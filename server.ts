@@ -53,6 +53,15 @@ app.post('/api/option_trades', (req, res) => {
   res.json({ id: result.lastInsertRowid });
 });
 
+// add a route to delete a option trade
+app.delete('/api/option_trades/:id', (req, res) => {
+  const { id } = req.params;
+  console.log("DELETE to /api/option_trades", id);
+  const stmt = db.prepare('DELETE FROM option_trades WHERE id = ?');
+  const result = stmt.run(id);
+  res.json({ id: result.lastInsertRowid });
+});
+
 app.put('/api/option_trades/:id', (req, res) => {
   const { id } = req.params;
   const { symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at } = req.body;

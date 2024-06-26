@@ -2,6 +2,7 @@
     import { createEventDispatcher } from "svelte";
     import { TradeStatus, type OptionTrade } from "../trade-detail/trade";
     import TradeModal from "./TradeModal.svelte";
+    import { DB_HOST, DB_PORT } from "$lib/utils/db-host";
 
     export let trade: OptionTrade;
     function calculatePL() {
@@ -39,12 +40,48 @@
         });
         dispatch('detailChange', trade);
     }
+    function triggerTradeDeleted() {
+        console.log('triggerTradeDeleted', trade);
+        const event = new CustomEvent('tradeDeleted', {
+            detail: trade
+        });
+        dispatch('tradeDeleted', trade);
+    }
+
+    let timer: any;
+    function handleMouseDown() {
+    // Start a timer when the mouse is pressed down
+    timer = setTimeout(() => {
+      // Show the confirmation dialog after 1 second (1000 ms)
+      if (window.confirm(`Do you want to delete the trade "${getTradeLabel(trade)}"?`)) {
+        // Perform the action if the user confirms
+        // delete the trade
+        fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/${(trade as any).id}`, {
+            method: 'DELETE'
+        }).then((response) => {
+            console.log('Trade deleted:', response);
+            triggerTradeDeleted();
+        }).catch((error) => {
+            console.error('Error deleting trade:', error);
+        });
+        
+      } else {
+        // Handle the case where the user cancels
+        console.log("Delete Canceled!")
+      }
+    }, 500); // 1000 ms = 1 second
+  }
+
+  function handleMouseUp() {
+    // Clear the timer if the mouse is released before the timeout
+    clearTimeout(timer);
+  }
 
 </script>
 
 <!-- display the summary of the trade -->
 <div class="container highlight-{pl == 0 ? 'grey': (pl >0 ? 'green':'red')}" style="border-size:1px border-color: {trade.status === TradeStatus.OPEN ? 'orange':'blue'};" 
-     role="button" tabindex="0" on:click={openModal} on:keydown={openModal}> 
+     role="button" tabindex="0" on:click={openModal} on:keydown={openModal} on:mousedown={handleMouseDown}  on:mouseup={handleMouseUp}> 
      <!--e.g. SPY $100 CALL 20240101 -->
       <label for="symbol" style="font-weight: bold;">{getTradeLabel(trade)}</label>
       <div style="font-size: small;">
