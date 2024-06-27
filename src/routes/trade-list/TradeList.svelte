@@ -147,7 +147,7 @@
 <div class="container">
     <div class="trades" id="open-trades">
       <h2>Open trades</h2>
-      <ul>
+      <ul class="scrollable">
         {#if openTrades.length > 0}
           {#each openTrades as trade}
             <li>
@@ -162,7 +162,7 @@
   
     <div class="trades" id="closed-trades">
       <h2>Closed trades</h2>
-      <ul>
+      <ul class="scrollable">
         {#if closedTrades.length > 0}
           {#each closedTrades as trade}
             <li>
@@ -211,9 +211,15 @@
 
   .trades {
     width: 45%;
+    
+  }
+  .scrollable {
+    max-height: 80%;
+    overflow-y: scroll;
   }
 
   h2 {
+    text-align: center;
     font-size: 1.5em;
     margin-bottom: 10px;
   }
