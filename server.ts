@@ -21,9 +21,9 @@ app.get('/api/users', (req, res) => {
 });
 
 app.post('/api/users', (req, res) => {
-  const { name, email } = req.body;
-  const stmt = db.prepare('INSERT INTO users (name, email) VALUES (?, ?)');
-  const result = stmt.run(name, email);
+  const { name, email, balance } = req.body;
+  const stmt = db.prepare('INSERT INTO users (name, email, balance) VALUES (?, ?, ?)');
+  const result = stmt.run(name, email, balance);
   res.json({ id: result.lastInsertRowid });
 });
 

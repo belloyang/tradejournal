@@ -44,3 +44,21 @@ export async function deleteTrade(trade: OptionTrade): Promise<{id: string}> {
     });
     return response.json();
 }
+
+// add users api
+export async function fetchAllUsers(): Promise<any> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/users`);
+    const result = await response.json();
+    return result.data;
+}
+
+export async function addAccount(user: any): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+    return response.json();
+}
