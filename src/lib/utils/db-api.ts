@@ -45,8 +45,8 @@ export async function deleteTrade(trade: OptionTrade): Promise<{id: string}> {
     return response.json();
 }
 
-// add users api
-export async function fetchAllUsers(): Promise<any> {
+// add accounts api
+export async function fetchAllAccounts(): Promise<any> {
     const response = await fetch(`${DB_HOST}:${DB_PORT}/api/users`);
     const result = await response.json();
     return result.data;
