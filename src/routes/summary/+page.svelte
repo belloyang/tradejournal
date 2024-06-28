@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
+    import {  onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
-    import { DB_HOST, DB_PORT } from "$lib/utils/db-info";
     import { currentAccountStore } from "../account-detail/account";
 
     let selectedDate: Date| undefined = new Date();
@@ -28,10 +27,9 @@
             selectedDate = new Date();
         }
     }
-    let unsubscribe: any;
     onMount(() => {
         console.log('Trade summary mounted');
-        unsubscribe = currentAccountStore.subscribe((value) => {
+        currentAccountStore.subscribe((value) => {
             console.log('Current Account:', value);
             currentAccount = value;
             if(currentAccount === undefined) {
@@ -42,9 +40,6 @@
         });
     });
 
-    onDestroy(() => {
-        unsubscribe();
-    });
 
 </script>
 <svelte:head>
