@@ -44,6 +44,13 @@ export class OptionTrade {
         this.status = status;
         this.marketValue = premium;
     }
+    
 }
 
+export function calcPL(trade: OptionTrade): number {
+    return (trade.marketValue - trade.premium) * trade.quantity * (trade.tradeType == TradeType.BUY ? 1 : -1) * 100;
+}
+export function calcPLPercent(trade: OptionTrade): number {
+    return calcPL(trade) / (trade.premium * trade.quantity * 100) * 100;
+}
 export const OptionTrades = writable<OptionTrade[]>([]);

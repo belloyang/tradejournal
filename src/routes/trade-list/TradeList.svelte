@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade, TradeStatus, OptionTrades, TradeType } from '../trade-detail/trade'
+    import { OptionTrade, TradeStatus, OptionTrades, TradeType, calcPL } from '../trade-detail/trade'
     import AddTradeButton from '../trade-detail/AddTradeButton.svelte';
     import TradeItem from './TradeItem.svelte';
     import { fetchAllOptionTrades } from '$lib/utils/db-api';
@@ -73,9 +73,7 @@
         });
     }
 
-    function calcPL(trade: OptionTrade) {
-        return (trade.marketValue - trade.premium) * trade.quantity * (trade.tradeType == TradeType.BUY ? 1 : -1) * 100;
-    }
+    
 
     function calcRealizedPL() {
         let realizedPL = 0;

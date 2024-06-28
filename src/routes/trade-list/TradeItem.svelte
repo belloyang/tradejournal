@@ -1,18 +1,14 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import { TradeStatus, type OptionTrade } from "../trade-detail/trade";
+    import { TradeStatus, calcPL, calcPLPercent, type OptionTrade } from "../trade-detail/trade";
     import TradeModal from "./TradeModal.svelte";
     import { deleteTrade } from "$lib/utils/db-api";
 
     export let trade: OptionTrade;
-    function calculatePL() {
-        return (trade.marketValue - trade.premium)*100;
-    }
-    $: pl = calculatePL();
-    function calculatePLPercentage() {
-        return (trade.marketValue - trade.premium)*100 / trade.premium;
-    }
-    $: plPercentage = calculatePLPercentage();
+   
+    $: pl = calcPL(trade);
+
+    $: plPercentage = calcPLPercent(trade);
     function getTradeLabel(trade: OptionTrade) {
         return `${trade.symbol} ${trade.strike} ${trade.optionType} ${trade.expirationDate}`;
     }
@@ -27,8 +23,8 @@
     function handleDetailChange(event: CustomEvent) {
         console.log('HandleDetailChange:', event.detail);
         trade = event.detail;
-        pl = calculatePL();
-        plPercentage = calculatePLPercentage();
+        pl = calcPL(trade);
+        plPercentage = calcPLPercent(trade);
         triggerDetailChange();
     }
 
