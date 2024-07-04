@@ -85,7 +85,7 @@
       </div>
       <div style="font-size: small;">
           <lable for="P/L" style="font-weight: bold;">P/L: ${pl.toFixed(2)}</lable>
-          <lable for="P/L Ratio" style="font-weight: bold;">P/L Ratio: {pl.toFixed(2)}%</lable>
+          <lable for="P/L Ratio" style="font-weight: bold;">P/L Ratio: {plPercentage.toFixed(2)}%</lable>
       </div>
 </div>
 <TradeModal optionTrade={trade} on:detailChange={handleDetailChange} show={showModal} onClose={closeModal} />
