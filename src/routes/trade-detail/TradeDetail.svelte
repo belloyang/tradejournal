@@ -96,6 +96,10 @@
     {/if}
 
     </div>
+    {#if !editing} 
+    <br/>
+    <label for="createdDate" style="font-size: small; color:gray">Created at {optionTrade.created_at}</label>
+    {/if}
 </div>
 
 <style>
