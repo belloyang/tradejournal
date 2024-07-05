@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
-	import github from '$lib/images/github.svg';
+    import { Account, currentAccountStore } from './account-detail/account';
+	
+	let currentAccount: Account | undefined = $currentAccountStore;
+
+
 </script>
 
 <header>
@@ -38,14 +42,22 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
-			<img src={github} alt="GitHub" />
-		</a>
+	<div class="corner column">
+		
+		<img src='/trading-account.svg' alt="trading-acount" />
+		<label for="acount-name" style="font-size: small;">{currentAccount === undefined ? 'No Account Selected': currentAccount.name}</label>
+		
 	</div>
 </header>
 
 <style>
+	.column {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 1em;
+	}
 	header {
 		display: flex;
 		justify-content: space-between;
@@ -62,11 +74,12 @@
 		justify-content: center;
 		width: 100%;
 		height: 100%;
+		padding: 1em;
 	}
 
 	.corner img {
-		width: 2em;
-		height: 2em;
+		width: 1.5em;
+		height: 1.5em;
 		object-fit: contain;
 	}
 
