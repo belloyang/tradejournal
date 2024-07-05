@@ -85,5 +85,6 @@
 		width: 2em;
 		height: 2em;
 		/* set green color */
+		filter: invert(42%) sepia(92%) saturate(2496%) hue-rotate(92deg) brightness(96%) contrast(101%);
 	}
 </style>
