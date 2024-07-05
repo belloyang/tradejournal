@@ -10,7 +10,7 @@
 	let allOptionTrades = [];
 	let allAcounts: Account[]= [];
 	
-	let currentAccount: Account | undefined = undefined;
+	let currentAccount: Account | undefined = $currentAccountStore;
 	
 	onMount(() => {
 		console.log('Home mounted');
@@ -22,10 +22,7 @@
 			allAcounts = accounts;
 			console.log('All users:', allAcounts);
 		});
-		currentAccountStore.subscribe((value) => {
-			console.log('Current Account:', value);
-			currentAccount = value;
-		});
+		
 	});
 
 	function selectAccount(account: Account) {

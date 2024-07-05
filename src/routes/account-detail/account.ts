@@ -14,4 +14,27 @@ export class Account {
     }
 }
 export const TradingAccounts = writable<Account[]>([]);
-export let currentAccountStore = writable<Account | undefined>(undefined);
+
+function createPersistentStore(key: string, startValue: Account | undefined) {
+    const isBrowser = typeof window !== 'undefined';
+    let initialValue = startValue;
+  
+    if (isBrowser) {
+      const storedValueStr = localStorage.getItem(key);
+      if (storedValueStr && storedValueStr !== 'undefined') {
+        initialValue = JSON.parse(storedValueStr);
+      }
+    }
+  
+    const store = writable(initialValue);
+  
+    if (isBrowser) {
+      store.subscribe(value => {
+        localStorage.setItem(key, JSON.stringify(value));
+      });
+    }
+  
+    return store;
+  }
+  
+  export let currentAccountStore = createPersistentStore('currentAccount', undefined);
