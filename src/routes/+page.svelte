@@ -3,7 +3,7 @@
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
     import CurrentDate from './CurrentDate.svelte';
     import AddTradeButton from './trade-detail/AddTradeButton.svelte';
-    import { onDestroy, onMount } from 'svelte';
+    import { onMount } from 'svelte';
     import { fetchAllAccounts, fetchAllOptionTrades } from '$lib/utils/db-api';
     import { currentAccountStore, type Account } from './account-detail/account';
     import AddAccountButton from './account-detail/AddAccountButton.svelte';
@@ -22,7 +22,9 @@
 			allAcounts = accounts;
 			console.log('All users:', allAcounts);
 		});
-		
+		currentAccountStore.subscribe((value) => {
+			currentAccount = value;
+		});
 	});
 
 	function selectAccount(account: Account) {
