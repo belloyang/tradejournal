@@ -1,11 +1,31 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
+    import { onMount } from 'svelte';
     import { Account, currentAccountStore } from './account-detail/account';
 	
 	let currentAccount: Account | undefined = $currentAccountStore;
 
-
+	let isAccountMenuOpen = false;
+  
+	function toggleDropdown() {
+		isAccountMenuOpen = !isAccountMenuOpen;
+	}	
+	function exitAccount() {
+		if(currentAccount && confirm('Do you want to exit the current account?')) {
+			currentAccountStore.set(undefined);
+		} else {
+			console.log('Exit Account Cancelled');
+		}
+		isAccountMenuOpen = false;
+		
+	}
+	onMount(() => {
+		console.log('Header mounted');
+		currentAccountStore.subscribe((value) => {
+			currentAccount = value;
+		});
+	});
 </script>
 
 <header>
@@ -42,15 +62,50 @@
 		</svg>
 	</nav>
 
-	<div class="corner column">
-		
+	<div class="corner">
+		<div class="column btn" role="button" tabindex="0" on:click={toggleDropdown} on:keydown={toggleDropdown} >
 		<img src='/trading-account.svg' alt="trading-acount" />
-		<label for="acount-name" style="font-size: small;">{currentAccount === undefined ? 'No Account Selected': currentAccount.name}</label>
-		
+		<label for="acount-name" style="font-size: small;">{currentAccount === undefined ? 'N/A': currentAccount.name}</label>
+		</div>
+		<div class="dropdown-content" style="display: {isAccountMenuOpen ? 'block': 'none'}">
+			<div class="menu">
+			  <span class="option"> <a href="/account-list" on:click={() => isAccountMenuOpen = false}>Switch Account</a></span>
+			  <span class="option"><a href="/account-detail" on:click={() => isAccountMenuOpen = false}>Add Account</a></span>
+			<button class="option" on:click={exitAccount} aria-label="Exit Account" disabled={!currentAccount}>Exit Account</button>
+			</div>
+			
+		  </div>
 	</div>
+	
+
 </header>
 
 <style>
+	.dropdown-content {
+		
+		position: absolute;
+		background-color: white;
+		min-width: 160px;
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+		right: 10px;
+	}
+	.option {
+		cursor: pointer;
+		text-align: center;
+	}
+	.option:hover {
+		background-color: lightblue;
+	}
+	.btn {
+		cursor: pointer;
+	}
+	.menu {
+		display: flex;
+		align-items: left;
+		justify-content: start;
+		flex-direction: column;
+	}
 	.column {
 		display: flex;
 		align-items: center;
@@ -66,15 +121,6 @@
 	.corner {
 		width: 3em;
 		height: 3em;
-	}
-
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-		padding: 1em;
 	}
 
 	.corner img {

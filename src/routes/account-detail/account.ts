@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 
 export class Account {
     id: number;
@@ -37,4 +37,4 @@ function createPersistentStore(key: string, startValue: Account | undefined) {
     return store;
   }
   
-  export let currentAccountStore = createPersistentStore('currentAccount', undefined);
+  export let currentAccountStore: Writable<Account|undefined> = createPersistentStore('currentAccount', undefined);
