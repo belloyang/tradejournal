@@ -1,4 +1,4 @@
-import { OptionTrade, OptionTrades } from "../../routes/trade-detail/trade";
+import { OptionTrade, OptionTrades } from "../../routes/trade-detail/optionTrade";
 import { DB_HOST, DB_PORT } from "./db-info";
 
 // define a function to fetch all optionTrades

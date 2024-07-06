@@ -2,7 +2,7 @@
     import { createEventDispatcher } from "svelte";
     
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
-    import type { OptionTrade } from "../trade-detail/trade";
+    import type { OptionTrade } from "../trade-detail/optionTrade";
     import { updateTrade } from "$lib/utils/db-api";
 
     export let show: Boolean = false;

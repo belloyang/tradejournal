@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import { TradeStatus, calcPL, calcPLPercent, type OptionTrade } from "../trade-detail/trade";
+    import { TradeStatus, calcPL, calcPLPercent, type OptionTrade } from "../trade-detail/optionTrade";
     import TradeModal from "./TradeModal.svelte";
     import { deleteTrade } from "$lib/utils/db-api";
 

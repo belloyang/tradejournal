@@ -1,7 +1,7 @@
 <script lang="ts">
     import { addTrade } from "$lib/utils/db-api";
     import TradeDetail from "./TradeDetail.svelte";
-    import { OptionTrade, TradeStatus, OptionTrades, OptionType, TradeType } from "./trade";
+    import { OptionTrade, TradeStatus, OptionTrades, OptionType, TradeType } from "./optionTrade";
      
     let trades = [];
 

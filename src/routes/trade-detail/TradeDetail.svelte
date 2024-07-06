@@ -1,6 +1,6 @@
 <script lang="ts" >
     import { createEventDispatcher } from "svelte";
-    import { OptionTrade, OptionType, TradeStatus, TradeType } from "./trade";
+    import { OptionTrade, OptionType, TradeStatus, TradeType } from "./optionTrade";
 
     export let optionTrade: OptionTrade;
     export let editing = false;
