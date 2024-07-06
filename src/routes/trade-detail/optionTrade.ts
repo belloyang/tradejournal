@@ -24,6 +24,7 @@ export class OptionTrade {
     status: TradeStatus;
     created_at: string = '';
     updated_at: string = '';
+    accountId: number = -1;// foreign key to account
 
     constructor(
         symbol: string,
@@ -33,7 +34,7 @@ export class OptionTrade {
         expirationDate: string,
         quantity: number, 
         premium: number,
-        status: TradeStatus = TradeStatus.OPEN) {
+        status: TradeStatus = TradeStatus.OPEN, accountId: number = -1) {
         this.symbol = symbol;
         this.optionType = optionType;
         this.tradeType = tradeType;
@@ -43,6 +44,7 @@ export class OptionTrade {
         this.premium = premium;
         this.status = status;
         this.marketValue = premium;
+        this.accountId = accountId;
     }
     
 }

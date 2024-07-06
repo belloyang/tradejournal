@@ -24,6 +24,7 @@ db.exec(`
         premium REAL,
         marketValue REAL,
         status TEXT,
+        accountId INTEGER,
         created_at TEXT,
         updated_at TEXT
     )

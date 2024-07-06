@@ -45,11 +45,11 @@ app.get('/api/option_trades', (req, res) => {
 });
 
 app.post('/api/option_trades', (req, res) => {
-  const { symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at } = req.body;
+  const { symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, accountId, created_at, updated_at } = req.body;
   console.log("POST to /api/option_trades", req.body);
-  const stmt = db.prepare(`INSERT INTO option_trades (symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-  const result = stmt.run(symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, created_at, updated_at);
+  const stmt = db.prepare(`INSERT INTO option_trades (symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, accountId, created_at, updated_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+  const result = stmt.run(symbol,  optionType, tradeType, strike, expirationDate, quantity, premium, marketValue, status, accountId, created_at, updated_at);
   res.json({ id: result.lastInsertRowid });
 });
 

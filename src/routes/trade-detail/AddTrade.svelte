@@ -1,9 +1,11 @@
 <script lang="ts">
     import { addTrade } from "$lib/utils/db-api";
+  import { get } from "svelte/store";
+  import { currentAccountStore } from "../account-detail/account";
     import TradeDetail from "./TradeDetail.svelte";
-    import { OptionTrade, TradeStatus, OptionTrades, OptionType, TradeType } from "./optionTrade";
+    import { OptionTrade, TradeStatus, OptionType, TradeType } from "./optionTrade";
+  import { onMount } from "svelte";
      
-    let trades = [];
 
     function handleSubmit() {
         console.log(`submit trade @${new Date().toDateString()}:`, optionTrade, );
@@ -18,7 +20,20 @@
         window.location.href = '/trade-list';
         
     }
-  let optionTrade: OptionTrade = new OptionTrade('', OptionType.CALL, TradeType.BUY,100, '', 1, 1.0, TradeStatus.OPEN);
+    let optionTrade: OptionTrade = new OptionTrade('', OptionType.CALL, TradeType.BUY,100, '', 1, 1.0, TradeStatus.OPEN);
+    onMount(() => {
+        
+        let currentAccount = get(currentAccountStore);
+        console.log('Add Trade mounted, currentAccount:', currentAccount);
+        if(currentAccount === undefined) {
+            console.error('Current Account is not defined');
+            // redirect to the home page
+            window.location.href = '/';
+        } else {
+            optionTrade.accountId = currentAccount.id;
+        }
+    });
+    
   </script>
   
 

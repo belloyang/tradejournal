@@ -14,6 +14,7 @@
 	function exitAccount() {
 		if(currentAccount && confirm('Do you want to exit the current account?')) {
 			currentAccountStore.set(undefined);
+			window.location.href = '/';
 		} else {
 			console.log('Exit Account Cancelled');
 		}
