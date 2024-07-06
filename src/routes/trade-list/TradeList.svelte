@@ -1,9 +1,11 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import { OptionTrade, TradeStatus, OptionTrades, TradeType, calcPL } from '../trade-detail/optionTrade'
+    import { OptionTrade, TradeStatus, OptionTrades, calcPL } from '../trade-detail/optionTrade'
     import AddTradeButton from '../trade-detail/AddTradeButton.svelte';
     import TradeItem from './TradeItem.svelte';
     import { fetchAllOptionTrades } from '$lib/utils/db-api';
+  import { Account, currentAccountStore } from '../account-detail/account';
+  import { get } from 'svelte/store';
 
     export let selectedDate: Date| undefined = undefined;
     let tradeList: OptionTrade[] = [];
@@ -41,8 +43,9 @@
             tradeUnsubscribe();
         }
         tradeUnsubscribe = OptionTrades.subscribe((value) => {
-            console.log('TradeList updated:', value);
-            tradeList = value;
+            const filteredList = value.filter((trade) => currentAccount && trade.accountId == currentAccount.id);
+            console.log(`TradeList for account: ${currentAccount?.name} updated:`, filteredList);
+            tradeList = filteredList;
             openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
             closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
             if(selectedDate) {
@@ -120,12 +123,20 @@
     }
 
     let tradeUnsubscribe: any;
+    let currentAccount: Account | undefined = undefined;
     onMount(() => {
-		console.log('TradeList mounted');
+    currentAccount = get(currentAccountStore);
+		console.log('TradeList mounted for currentAccount:', currentAccount);
+    if(currentAccount === undefined) {
+        console.error('Current Account is not defined');
+        // redirect to the home page
+        window.location.href = '/';
+    } else {
         fetchAllOptionTrades().then(trade => {
             console.log('All trades:', trade);
         });
         initialize();
+    }
 		
 	});
 
