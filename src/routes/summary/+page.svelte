@@ -2,6 +2,7 @@
     import {  onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
     import { Account, currentAccountStore } from "../account-detail/account";
+  import { calcBalance } from "$lib/utils/accounts-utils";
 
     let selectedDate: Date| undefined = new Date();
     let currentAccount: Account | undefined = undefined;
@@ -40,6 +41,7 @@
         });
     });
 
+    
 
 </script>
 <svelte:head>
@@ -48,7 +50,7 @@
 </svelte:head>
 
 <div>
-    <legend>Account Balance: ${currentAccount && currentAccount.balance.toFixed(2)}</legend>
+    <legend>Account Balance: ${currentAccount && calcBalance(currentAccount)}</legend>
     <div class="container">
     <button type="button" on:click={previousDaySummary} on:keydown={previousDaySummary}>
         <img src="/caret-left.svg" alt="caret-left" />

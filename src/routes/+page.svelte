@@ -7,6 +7,7 @@
     import { fetchAllAccounts, fetchAllOptionTrades } from '$lib/utils/db-api';
     import { currentAccountStore, type Account } from './account-detail/account';
     import AddAccountButton from './account-detail/AddAccountButton.svelte';
+  import { calcBalance } from '$lib/utils/accounts-utils';
 	let allOptionTrades = [];
 	let allAcounts: Account[]= [];
 	
@@ -63,7 +64,7 @@
 		<p style="font-size: large;">You have {allAcounts.length} accounts, select one to start your Trade Journal</p>
 		<ul>
 			{#each allAcounts as account}
-				<li><button on:click={selectAccount(account)}>Acount:{account.name}, Balance:{account.balance}</button></li>
+				<li><button on:click={selectAccount(account)}>Acount:{account.name}, Balance:{calcBalance(account)}</button></li>
 			{/each}
 		</ul>
 		{/if}

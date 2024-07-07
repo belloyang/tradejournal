@@ -5,8 +5,6 @@ export class Account {
     name: string;
     cash: number;
     asset: number;
-
-    get balance() { return this.cash + this.asset; }
     
     constructor(name: string, cash: number = 10_000, asset: number = 0) {
         this.name = name;
