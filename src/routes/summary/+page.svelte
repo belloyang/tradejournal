@@ -1,10 +1,10 @@
 <script lang="ts">
     import {  onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
-    import { currentAccountStore } from "../account-detail/account";
+    import { Account, currentAccountStore } from "../account-detail/account";
 
     let selectedDate: Date| undefined = new Date();
-    let currentAccount = undefined;
+    let currentAccount: Account | undefined = undefined;
     function nextDaySummary() {
         if(selectedDate === undefined) {
             selectedDate = new Date();
@@ -48,6 +48,7 @@
 </svelte:head>
 
 <div>
+    <legend>Account Balance: ${currentAccount && currentAccount.balance.toFixed(2)}</legend>
     <div class="container">
     <button type="button" on:click={previousDaySummary} on:keydown={previousDaySummary}>
         <img src="/caret-left.svg" alt="caret-left" />
@@ -66,7 +67,11 @@
 </div>
 
 <style>
-   
+    legend {
+        font-size: large;
+        font-weight: bold;
+        background-color: aliceblue;
+    }
     .container {
         display: flex;
         justify-content: space-between;

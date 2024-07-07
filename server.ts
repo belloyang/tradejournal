@@ -14,16 +14,16 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get('/api/users', (req, res) => {
-  const stmt = db.prepare('SELECT * FROM users');
-  const users = stmt.all();
-  res.json({ data: users });
+app.get('/api/trading_accounts', (req, res) => {
+  const stmt = db.prepare('SELECT * FROM trading_accounts');
+  const accounts = stmt.all();
+  res.json({ data: accounts });
 });
 
-app.post('/api/users', (req, res) => {
-  const { name, email, balance } = req.body;
-  const stmt = db.prepare('INSERT INTO users (name, email, balance) VALUES (?, ?, ?)');
-  const result = stmt.run(name, email, balance);
+app.post('/api/trading_accounts', (req, res) => {
+  const { name, cash, asset, created_at, updated_at } = req.body;
+  const stmt = db.prepare('INSERT INTO trading_accounts (name, cash, asset, created_at, updated_at) VALUES (?, ?, ?, ?, ?)');
+  const result = stmt.run(name, cash, asset, created_at, updated_at);
   res.json({ id: result.lastInsertRowid });
 });
 

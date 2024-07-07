@@ -1,16 +1,17 @@
 import { writable, type Writable } from "svelte/store";
 
 export class Account {
-    id: number;
+    id: number = -1;
     name: string;
-    email: string;
-    balance: number;
+    cash: number;
+    asset: number;
+
+    get balance() { return this.cash + this.asset; }
     
-    constructor(id: number, name: string, email: string = '', balance: number = 10_000) {
-        this.id = id;
+    constructor(name: string, cash: number = 10_000, asset: number = 0) {
         this.name = name;
-        this.email = email;
-        this.balance = balance;
+        this.cash = cash;
+        this.asset = asset;
     }
 }
 export const TradingAccounts = writable<Account[]>([]);

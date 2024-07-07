@@ -47,18 +47,18 @@ export async function deleteTrade(trade: OptionTrade): Promise<{id: string}> {
 
 // add accounts api
 export async function fetchAllAccounts(): Promise<any> {
-    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/users`);
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts`);
     const result = await response.json();
     return result.data;
 }
 
-export async function addAccount(user: any): Promise<{id: string}> {
-    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/users`, {
+export async function addAccount(account: any): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify({...account, created_at: new Date(), updated_at: new Date()})
     });
     return response.json();
 }
