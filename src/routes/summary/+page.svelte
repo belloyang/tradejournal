@@ -41,7 +41,7 @@
         });
     });
 
-    
+    let openDetails = false;
 
 </script>
 <svelte:head>
@@ -50,7 +50,14 @@
 </svelte:head>
 
 <div>
-    <legend>Account Balance: ${currentAccount && calcBalance(currentAccount)}</legend>
+    <div class="balance" role="button" tabindex="0" on:click={() => openDetails = !openDetails} on:keydown={() => openDetails = !openDetails}>Account Balance: ${currentAccount && calcBalance(currentAccount)}</div>
+    {#if openDetails}
+        <div style="background-color: skyblue">
+            <span style="font-weight: bold;">{currentAccount && currentAccount.name}:</span>
+            <span>Cash: ${currentAccount && currentAccount.cash.toFixed(2)},</span>
+            <span>Asset: ${currentAccount && currentAccount.asset.toFixed(2)}</span>
+        </div>
+    {/if}
     <div class="container">
     <button type="button" on:click={previousDaySummary} on:keydown={previousDaySummary}>
         <img src="/caret-left.svg" alt="caret-left" />
@@ -69,10 +76,14 @@
 </div>
 
 <style>
-    legend {
+    .balance {
         font-size: large;
         font-weight: bold;
         background-color: aliceblue;
+    }
+    .balance:hover {
+        cursor: pointer;
+        background-color: skyblue;
     }
     .container {
         display: flex;
