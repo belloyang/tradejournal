@@ -1,5 +1,7 @@
-import { OptionTrade, OptionTrades } from "../../routes/trade-detail/optionTrade";
+import { OptionTrade, OptionTrades, TradeStatus, TradeType } from "../../routes/trade-detail/optionTrade";
 import { DB_HOST, DB_PORT } from "./db-info";
+import type { Account } from "../../routes/account-detail/account";
+import { get, type Writable } from "svelte/store";
 
 // define a function to fetch all optionTrades
 export async function fetchAllOptionTrades(): Promise<OptionTrade[]> {
@@ -43,6 +45,52 @@ export async function deleteTrade(trade: OptionTrade): Promise<{id: string}> {
       }
     });
     return response.json();
+}
+
+export function removeTradefromAccount(currentAccountStore:  Writable<Account|undefined>, trade: OptionTrade) {
+  let currentAccount = get(currentAccountStore);
+  if(trade.tradeType === TradeType.BUY) {
+      // subtract cash
+      if(trade.status === TradeStatus.CLOSED) {
+          // add p/l
+          if(currentAccount) {
+              currentAccount.cash -= (trade.marketValue - trade.premium)*trade.quantity*100;
+              currentAccountStore.set(currentAccount);
+          } else {
+              console.error('Current Account is not defined');
+          }
+      } else {
+          // substract cash and add asset
+          if(currentAccount) {
+              currentAccount.cash += trade.premium*trade.quantity*100;
+              currentAccount.asset -= trade.marketValue*trade.quantity*100;
+              currentAccountStore.set(currentAccount);
+          } else {
+              console.error('Current Account is not defined');
+          }
+      }
+      
+  } else {
+      // subtract asset
+      if(trade.status === TradeStatus.CLOSED) {
+          // add p/l
+          if(currentAccount) {
+              currentAccount.asset += (trade.marketValue - trade.premium)*trade.quantity*100;
+              currentAccountStore.set(currentAccount);
+          } else {
+              console.error('Current Account is not defined');
+          }
+      } else {
+          // substract asset and add cash
+          if(currentAccount) {
+              currentAccount.asset += trade.marketValue*trade.quantity*100;
+              currentAccount.cash -= trade.premium*trade.quantity*100;
+              currentAccountStore.set(currentAccount);
+          } else {
+              console.error('Current Account is not defined');
+          }
+      }
+  }
 }
 
 // add accounts api

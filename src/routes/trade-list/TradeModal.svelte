@@ -4,6 +4,8 @@
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
     import type { OptionTrade } from "../trade-detail/optionTrade";
     import { updateTrade } from "$lib/utils/db-api";
+  import { get } from "svelte/store";
+  import { currentAccountStore } from "../account-detail/account";
 
     export let show: Boolean = false;
     export let onClose: any;
