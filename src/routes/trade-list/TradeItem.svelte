@@ -1,8 +1,10 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import { TradeStatus, calcPL, calcPLPercent, type OptionTrade } from "../trade-detail/optionTrade";
+    import { OptionType, TradeStatus, TradeType, calcPL, calcPLPercent, type OptionTrade } from "../trade-detail/optionTrade";
     import TradeModal from "./TradeModal.svelte";
-    import { deleteTrade } from "$lib/utils/db-api";
+    import { deleteTrade, removeTradefromAccount } from "$lib/utils/db-api";
+  import { currentAccountStore } from "../account-detail/account";
+  import { get } from "svelte/store";
 
     export let trade: OptionTrade;
    
@@ -54,6 +56,7 @@
         // delete the trade
         deleteTrade(trade).then((response) => {
             console.log('Trade deleted:', response);
+            removeTradefromAccount(currentAccountStore, trade);
             triggerTradeDeleted();
         }).catch((error) => {
             console.error('Error deleting trade:', error);

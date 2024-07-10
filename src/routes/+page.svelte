@@ -4,9 +4,10 @@
     import CurrentDate from './CurrentDate.svelte';
     import AddTradeButton from './trade-detail/AddTradeButton.svelte';
     import { onMount } from 'svelte';
-    import { fetchAllAccounts, fetchAllOptionTrades } from '$lib/utils/db-api';
+    import { fetchAllAccounts, fetchAllOptionTrades, updateAccount } from '$lib/utils/db-api';
     import { currentAccountStore, type Account } from './account-detail/account';
     import AddAccountButton from './account-detail/AddAccountButton.svelte';
+  import { calcBalance } from '$lib/utils/accounts-utils';
 	let allOptionTrades = [];
 	let allAcounts: Account[]= [];
 	
@@ -24,6 +25,12 @@
 		});
 		currentAccountStore.subscribe((value) => {
 			currentAccount = value;
+			console.log('Current Account updated:', currentAccount);
+			updateAccount(currentAccount).then((response) => {
+				console.log('Account updated:', response);
+			}).catch((error) => {
+				console.error('Error updating account:', error);
+			});
 		});
 	});
 
@@ -63,7 +70,7 @@
 		<p style="font-size: large;">You have {allAcounts.length} accounts, select one to start your Trade Journal</p>
 		<ul>
 			{#each allAcounts as account}
-				<li><button on:click={selectAccount(account)}>Acount:{account.name}, Balance:{account.balance}</button></li>
+				<li><button on:click={selectAccount(account)}>Acount:{account.name}, Balance:{calcBalance(account)}</button></li>
 			{/each}
 		</ul>
 		{/if}

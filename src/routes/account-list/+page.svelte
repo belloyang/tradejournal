@@ -4,6 +4,7 @@
     import { Account, currentAccountStore, TradingAccounts } from "../account-detail/account";
     import { fetchAllAccounts } from '$lib/utils/db-api';
     import AddAccountButton from '../account-detail/AddAccountButton.svelte';
+  import { calcBalance } from '$lib/utils/accounts-utils';
 	let tradingAccounts: Account[] = [];
 	let currentAccount: Account | undefined = $currentAccountStore;
 	onMount(async () => {
@@ -20,6 +21,7 @@
 			currentAccountStore.set(account);
 		}
 	}
+	
 
 
 </script>
@@ -35,7 +37,7 @@
 		<ul>
 			{#each tradingAccounts as account}
 				<li class="row"><button on:click={selectAccount(account)} disabled={currentAccount && account.id === currentAccount.id}>
-					Acount:{account.name}, Balance:{account.balance}</button>
+					Acount:{account.name}, Balance: ${calcBalance(account)}</button>
 					{#if currentAccount && account.id === currentAccount.id}
 						<img src="/check.svg" alt="Checkmark"/>
 					{/if}

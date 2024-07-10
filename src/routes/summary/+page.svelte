@@ -1,10 +1,11 @@
 <script lang="ts">
     import {  onMount } from "svelte";
     import TradeList from "../trade-list/TradeList.svelte";
-    import { currentAccountStore } from "../account-detail/account";
+    import { Account, currentAccountStore } from "../account-detail/account";
+  import { calcBalance } from "$lib/utils/accounts-utils";
 
     let selectedDate: Date| undefined = new Date();
-    let currentAccount = undefined;
+    let currentAccount: Account | undefined = undefined;
     function nextDaySummary() {
         if(selectedDate === undefined) {
             selectedDate = new Date();
@@ -40,6 +41,7 @@
         });
     });
 
+    let openDetails = false;
 
 </script>
 <svelte:head>
@@ -48,6 +50,17 @@
 </svelte:head>
 
 <div>
+    <div class="balance" role="button" tabindex="0" 
+    on:click={() => openDetails = !openDetails} 
+    on:keydown={() => openDetails = !openDetails}>
+    Account Balance: ${currentAccount && calcBalance(currentAccount)}</div>
+    {#if openDetails}
+        <div style="background-color: skyblue">
+            <span style="font-weight: bold;">{currentAccount && currentAccount.name}:</span>
+            <span>Cash: ${currentAccount && currentAccount.cash.toFixed(2)},</span>
+            <span>Asset: ${currentAccount && currentAccount.asset.toFixed(2)}</span>
+        </div>
+    {/if}
     <div class="container">
     <button type="button" on:click={previousDaySummary} on:keydown={previousDaySummary}>
         <img src="/caret-left.svg" alt="caret-left" />
@@ -66,7 +79,15 @@
 </div>
 
 <style>
-   
+    .balance {
+        font-size: large;
+        font-weight: bold;
+        background-color: aliceblue;
+    }
+    .balance:hover {
+        cursor: pointer;
+        background-color: skyblue;
+    }
     .container {
         display: flex;
         justify-content: space-between;

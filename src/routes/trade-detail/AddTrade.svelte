@@ -13,6 +13,51 @@
         
         addTrade(optionTrade).then((response) => {
             console.log('Trade added:', response);
+            let currentAccount = get(currentAccountStore);
+            if(optionTrade.tradeType === TradeType.BUY) {
+                // subtract cash
+                if(optionTrade.status === TradeStatus.CLOSED) {
+                    // add p/l
+                    if(currentAccount) {
+                        currentAccount.cash += (optionTrade.marketValue - optionTrade.premium)*optionTrade.quantity*100;
+                        currentAccountStore.set(currentAccount);
+                    } else {
+                        console.error('Current Account is not defined');
+                    }
+                } else {
+                    // substract cash and add asset
+            
+                    if(currentAccount) {
+                        currentAccount.cash -= optionTrade.premium*optionTrade.quantity*100;
+                        currentAccount.asset += optionTrade.marketValue*optionTrade.quantity*100;
+                        currentAccountStore.set(currentAccount);
+                    } else {
+                        console.error('Current Account is not defined');
+                    
+                    }
+                }
+                
+            } else {
+                // subtract asset
+                if(optionTrade.status === TradeStatus.CLOSED) {
+                    // add p/l
+                    if(currentAccount) {
+                        currentAccount.asset -= (optionTrade.marketValue - optionTrade.premium)*optionTrade.quantity*100;
+                        currentAccountStore.set(currentAccount);
+                    } else {
+                        console.error('Current Account is not defined');
+                    }
+                } else {
+                    // substract asset and add cash
+                    if(currentAccount) {
+                        currentAccount.asset -= optionTrade.marketValue*optionTrade.quantity*100;
+                        currentAccount.cash += optionTrade.premium*optionTrade.quantity*100;
+                        currentAccountStore.set(currentAccount);
+                    } else {
+                        console.error('Current Account is not defined');
+                    }
+                }
+            }
         }).catch((error) => {
             console.error('Error adding trade:', error);
         });

@@ -1,21 +1,22 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     
     import TradeDetail from "../trade-detail/TradeDetail.svelte";
-    import type { OptionTrade } from "../trade-detail/optionTrade";
-    import { updateTrade } from "$lib/utils/db-api";
+    import { TradeStatus, TradeType, type OptionTrade } from "../trade-detail/optionTrade";
+    import { removeTradefromAccount, updateAccount, updateTrade } from "$lib/utils/db-api";
+    import { currentAccountStore } from "../account-detail/account";
 
     export let show: Boolean = false;
     export let onClose: any;
 
     export let optionTrade: OptionTrade;
     
-    const originalTrade = optionTrade;
+    let originalTrade: OptionTrade;
 
     let editing = false;
 
     function save() {
-        console.log('Saving', optionTrade);
+        console.log('Saving:', originalTrade, optionTrade);
         const trade_id = (optionTrade as any).id;
         if(trade_id === undefined) {
             console.error('Trade ID is not defined:', optionTrade);
@@ -26,6 +27,50 @@
         
         updateTrade(optionTrade).then((response) => {
             console.log('Trade saved:', response);
+            removeTradefromAccount(currentAccountStore, originalTrade);
+            if(optionTrade.tradeType == TradeType.BUY) {
+                if(optionTrade.status === TradeStatus.CLOSED) {
+                    currentAccountStore.update((account) => {
+                        if(account === undefined) {
+                            console.error('Current Account is not defined');
+                            return;
+                        }
+                        account.cash += (optionTrade.marketValue - optionTrade.premium)*optionTrade.quantity*100;
+                        return account;
+                    })
+                } else {
+                    currentAccountStore.update((account) => {
+                        if(account === undefined) {
+                            console.error('Current Account is not defined');
+                            return;
+                        }
+                        account.cash -= optionTrade.premium*optionTrade.quantity*100;
+                        account.asset += optionTrade.marketValue*optionTrade.quantity*100;
+                        return account;
+                    });
+                }
+            } else {
+                if(optionTrade.status === TradeStatus.CLOSED) {
+                    currentAccountStore.update((account) => {
+                        if(account === undefined) {
+                            console.error('Current Account is not defined');
+                            return;
+                        }
+                        account.asset -= (optionTrade.marketValue - optionTrade.premium)*optionTrade.quantity*100;
+                        return account;
+                    });
+                } else {
+                    currentAccountStore.update((account) => {
+                        if(account === undefined) {
+                            console.error('Current Account is not defined');
+                            return;
+                        }
+                        account.asset -= optionTrade.marketValue*optionTrade.quantity*100;
+                        account.cash += optionTrade.premium*optionTrade.quantity*100;
+                        return account;
+                    });
+                }
+            }
             triggerDetailChange();
         }).catch((error) => {
             console.error('Error saving trade:', error);
@@ -51,6 +96,13 @@
         });
         dispatch('detailChange',optionTrade);
     }   
+
+    function handleEditing() {
+        console.log('Editing:', editing);
+        editing = true;
+        originalTrade = {...optionTrade};
+    }
+    
 </script>
 
 {#if show} 
@@ -60,7 +112,7 @@
             {#if editing}
                 <button class="close" on:click={save}><img src="/save.svg" alt="Save"></button>
             {:else}
-                <button class="close" on:click={() => editing = true }><img src="/edit.svg" alt="Editing"></button>
+                <button class="close" on:click={handleEditing }><img src="/edit.svg" alt="Editing"></button>
             {/if}
             <br/>
             <TradeDetail {editing} {optionTrade} on:detailChange={handleDetailChange}/>

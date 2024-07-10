@@ -1,9 +1,8 @@
 <script lang="ts">
-    import { page } from '$app/stores';
     import { addAccount } from '$lib/utils/db-api';
     import { Account } from './account';
 
-    let account: Account = new Account(0, '');
+    let account: Account = new Account('');
 
     function handleSubmit() {
         addAccount(account).then((response) => {
@@ -28,13 +27,13 @@
         <div class="container">
         <label for="accountName">Account Name</label>
         <input type="text" id="accountName" bind:value={account.name} required />
-        <label for='email'>Email</label>
-        <input type='email' id='email' bind:value={account.email} />
-
-        <label for="balance"> Balance </label>
-        <input type="number" id="balance" bind:value={account.balance} required />
+        <label for='cash'>Cash/Buying Power</label>
+        <input type='number' id='cash' step="0.01" bind:value={account.cash} />
+        <label for='asset'>Asset</label>
+        <input type='number' id='asset' step="0.01" bind:value={account.asset} />
 
         <button type="submit">Add Account</button>
+        <button on:click={() => window.location.href = '/account-list'}>Cancel</button>
         </div>
     </form>
 </div>
