@@ -1,6 +1,7 @@
 <script lang="ts">
     import { addAccount } from '$lib/utils/db-api';
     import { Account } from './account';
+  import AccountDetail from './AccountDetail.svelte';
 
     let account: Account = new Account('');
 
@@ -25,13 +26,8 @@
 
     <form on:submit|preventDefault={handleSubmit}>
         <div class="container">
-        <label for="accountName">Account Name</label>
-        <input type="text" id="accountName" bind:value={account.name} required />
-        <label for='cash'>Cash/Buying Power</label>
-        <input type='number' id='cash' step="0.01" bind:value={account.cash} />
-        <label for='asset'>Asset</label>
-        <input type='number' id='asset' step="0.01" bind:value={account.asset} />
-
+       
+        <AccountDetail account={account} />
         <button type="submit">Add Account</button>
         <button on:click={() => window.location.href = '/account-list'}>Cancel</button>
         </div>
