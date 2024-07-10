@@ -72,6 +72,16 @@ app.put('/api/option_trades/:id', (req, res) => {
   }
 );
 
+app.put('/api/trading_accounts/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, cash, asset, created_at, updated_at } = req.body;
+  console.log("PUT to /api/trading_accounts", req.body);
+  const stmt = db.prepare(`UPDATE trading_accounts SET name = ?, cash = ?, asset = ?, created_at = ?, updated_at = ? WHERE id = ?`);
+  const result = stmt.run(name, cash, asset, created_at, updated_at, id);
+  res.json({ id: result.lastInsertRowid });
+  } 
+);
+
 app.listen(DB_PORT, () => {
   console.log(`Server running at ${DB_HOST}:${DB_PORT}/`);
 });

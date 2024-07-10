@@ -110,3 +110,14 @@ export async function addAccount(account: any): Promise<{id: string}> {
     });
     return response.json();
 }
+
+export async function updateAccount(account: any): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts/${account.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({...account, updated_at: new Date()})
+    });
+    return response.json();
+}

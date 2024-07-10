@@ -50,7 +50,10 @@
 </svelte:head>
 
 <div>
-    <div class="balance" role="button" tabindex="0" on:click={() => openDetails = !openDetails} on:keydown={() => openDetails = !openDetails}>Account Balance: ${currentAccount && calcBalance(currentAccount)}</div>
+    <div class="balance" role="button" tabindex="0" 
+    on:click={() => openDetails = !openDetails} 
+    on:keydown={() => openDetails = !openDetails}>
+    Account Balance: ${currentAccount && calcBalance(currentAccount)}</div>
     {#if openDetails}
         <div style="background-color: skyblue">
             <span style="font-weight: bold;">{currentAccount && currentAccount.name}:</span>

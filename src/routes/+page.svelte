@@ -4,7 +4,7 @@
     import CurrentDate from './CurrentDate.svelte';
     import AddTradeButton from './trade-detail/AddTradeButton.svelte';
     import { onMount } from 'svelte';
-    import { fetchAllAccounts, fetchAllOptionTrades } from '$lib/utils/db-api';
+    import { fetchAllAccounts, fetchAllOptionTrades, updateAccount } from '$lib/utils/db-api';
     import { currentAccountStore, type Account } from './account-detail/account';
     import AddAccountButton from './account-detail/AddAccountButton.svelte';
   import { calcBalance } from '$lib/utils/accounts-utils';
@@ -25,6 +25,12 @@
 		});
 		currentAccountStore.subscribe((value) => {
 			currentAccount = value;
+			console.log('Current Account updated:', currentAccount);
+			updateAccount(currentAccount).then((response) => {
+				console.log('Account updated:', response);
+			}).catch((error) => {
+				console.error('Error updating account:', error);
+			});
 		});
 	});
 
