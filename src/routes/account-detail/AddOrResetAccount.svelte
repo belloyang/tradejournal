@@ -1,6 +1,6 @@
 <script lang="ts">
     import { addAccount, deleteAccountOptionTrades, updateAccount } from '$lib/utils/db-api';
-    import { Account } from './account';
+    import { Account, currentAccountStore } from './account';
   import AccountDetail from './AccountDetail.svelte';
 
     export let reset: boolean = false;
@@ -11,6 +11,7 @@
         if(reset) {
             updateAccount(account).then((response) => {
                 console.log('Account updated:', response);
+                currentAccountStore.set(account);
                 if(deleteTrades) {
                     // delete optionTrades whose accountId equals account.id
                     deleteAccountOptionTrades(account.id).then((response) => {
