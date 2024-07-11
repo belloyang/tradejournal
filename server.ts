@@ -89,6 +89,14 @@ app.put('/api/trading_accounts/:id', (req, res) => {
   } 
 );
 
+app.delete('/api/trading_accounts/:id', (req, res) => {
+  const { id } = req.params;
+  console.log("DELETE to /api/trading_accounts", id);
+  const stmt = db.prepare('DELETE FROM trading_accounts WHERE id = ?');
+  const result = stmt.run(id);
+  res.json({ id: result.lastInsertRowid });
+});
+
 app.delete('/api/option_trades/account/:accountId', (req, res) => {
   const { accountId } = req.params;
   console.log("DELETE to /api/option_trades/account", accountId);

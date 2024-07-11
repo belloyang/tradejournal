@@ -129,6 +129,16 @@ export async function updateAccount(account: any): Promise<{id: string}> {
     return response.json();
 }
 
+export async function deleteAccountById(accountId: number): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts/${accountId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.json();
+}
+
 export async function deleteAccountOptionTrades(accountId: number): Promise<{id: string}> {
     const response = await fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/account/${accountId}`, {
       method: 'DELETE',
