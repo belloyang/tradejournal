@@ -1,17 +1,24 @@
 <script lang="ts">
-    import { addAccount, updateAccount } from '$lib/utils/db-api';
+    import { addAccount, deleteAccountOptionTrades, updateAccount } from '$lib/utils/db-api';
     import { Account } from './account';
   import AccountDetail from './AccountDetail.svelte';
 
     export let reset: boolean = false;
     export let account: Account = new Account('');
 
+    let deleteTrades = true;
     function handleSubmit() {
         if(reset) {
             updateAccount(account).then((response) => {
                 console.log('Account updated:', response);
-                // TODO: delete optionTrades whose accountId equals account.id
-                // deleteAccountOptionTrades(account.id);
+                if(deleteTrades) {
+                    // delete optionTrades whose accountId equals account.id
+                    deleteAccountOptionTrades(account.id).then((response) => {
+                        console.log('OptionTrades deleted:', response);
+                    }).catch((error) => {
+                        console.error('Error deleting optionTrades:', error);
+                    });
+                }
             }).catch((error) => {
                 console.error('Error updating account:', error);
             });
@@ -44,6 +51,10 @@
         <button on:click={() => window.location.href = '/account-list'}>Cancel</button>
         </div>
     </form>
+    {#if reset}
+    <div class="row"><input type="checkbox" bind:checked={deleteTrades} /> Delete Existing trades</div>
+    {/if}
+    
 </div>
 
 <style>

@@ -89,6 +89,14 @@ app.put('/api/trading_accounts/:id', (req, res) => {
   } 
 );
 
+app.delete('/api/option_trades/account/:accountId', (req, res) => {
+  const { accountId } = req.params;
+  console.log("DELETE to /api/option_trades/account", accountId);
+  const stmt = db.prepare('DELETE FROM option_trades WHERE accountId = ?');
+  const result = stmt.run(accountId);
+  res.json({ id: result.lastInsertRowid });
+});
+
 app.listen(DB_PORT, () => {
   console.log(`Server running at ${DB_HOST}:${DB_PORT}/`);
 });
