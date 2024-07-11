@@ -72,6 +72,13 @@ app.put('/api/option_trades/:id', (req, res) => {
   }
 );
 
+app.get('/api/trading_accounts/:id', (req, res) => {
+  const { id } = req.params;
+  const stmt = db.prepare('SELECT * FROM trading_accounts WHERE id = ?');
+  const account = stmt.get(id);
+  res.json({ data: account });
+});
+
 app.put('/api/trading_accounts/:id', (req, res) => {
   const { id } = req.params;
   const { name, cash, asset, created_at, updated_at } = req.body;

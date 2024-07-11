@@ -1,10 +1,15 @@
 <script lang="ts">
     import '$lib/shared.css';
+
     export let account = {
         name: 'Account 1',
         cash: 10000,
         asset: 0
     };
+
+    
+    
+
 </script>
 
 <div class="column">
