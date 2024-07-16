@@ -106,6 +106,7 @@
     .container {
         border-radius: 0.5em;
         margin: 0 auto;
+        padding: 0.5em;
     }
     .container:hover {
         cursor: pointer;

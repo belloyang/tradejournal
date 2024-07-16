@@ -72,6 +72,13 @@ app.put('/api/option_trades/:id', (req, res) => {
   }
 );
 
+app.get('/api/trading_accounts/:id', (req, res) => {
+  const { id } = req.params;
+  const stmt = db.prepare('SELECT * FROM trading_accounts WHERE id = ?');
+  const account = stmt.get(id);
+  res.json({ data: account });
+});
+
 app.put('/api/trading_accounts/:id', (req, res) => {
   const { id } = req.params;
   const { name, cash, asset, created_at, updated_at } = req.body;
@@ -81,6 +88,22 @@ app.put('/api/trading_accounts/:id', (req, res) => {
   res.json({ id: result.lastInsertRowid });
   } 
 );
+
+app.delete('/api/trading_accounts/:id', (req, res) => {
+  const { id } = req.params;
+  console.log("DELETE to /api/trading_accounts", id);
+  const stmt = db.prepare('DELETE FROM trading_accounts WHERE id = ?');
+  const result = stmt.run(id);
+  res.json({ id: result.lastInsertRowid });
+});
+
+app.delete('/api/option_trades/account/:accountId', (req, res) => {
+  const { accountId } = req.params;
+  console.log("DELETE to /api/option_trades/account", accountId);
+  const stmt = db.prepare('DELETE FROM option_trades WHERE accountId = ?');
+  const result = stmt.run(accountId);
+  res.json({ id: result.lastInsertRowid });
+});
 
 app.listen(DB_PORT, () => {
   console.log(`Server running at ${DB_HOST}:${DB_PORT}/`);

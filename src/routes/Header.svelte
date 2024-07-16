@@ -72,6 +72,7 @@
 			<div class="menu">
 			  <span class="option"> <a href="/account-list" on:click={() => isAccountMenuOpen = false}>Switch Account</a></span>
 			  <span class="option"><a href="/account-detail" on:click={() => isAccountMenuOpen = false}>Add Account</a></span>
+			  <span class="option"><a href='/account-detail?accountId={currentAccount && currentAccount.id}' on:click={() => isAccountMenuOpen = false}>Reset Account</a></span>
 			<button class="option" on:click={exitAccount} aria-label="Exit Account" disabled={!currentAccount}>Exit Account</button>
 			</div>
 			

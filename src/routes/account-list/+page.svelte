@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
     import { Account, currentAccountStore, TradingAccounts } from "../account-detail/account";
-    import { fetchAllAccounts } from '$lib/utils/db-api';
+    import { deleteAccountById, fetchAllAccounts } from '$lib/utils/db-api';
     import AddAccountButton from '../account-detail/AddAccountButton.svelte';
   import { calcBalance } from '$lib/utils/accounts-utils';
 	let tradingAccounts: Account[] = [];
@@ -21,9 +21,29 @@
 			currentAccountStore.set(account);
 		}
 	}
-	
+	let showActionMenu = false;
+	let mouseDownAccount: number;
+	function toggleActionMenu(event: MouseEvent, accountId: number) {
+		event.preventDefault();
+		console.log('Mouse down on account:', accountId);
+		mouseDownAccount = accountId;
+		showActionMenu = !showActionMenu;
+	}
 
-
+	function deleteAccount(accountId: number) {
+		return function() {
+			if(confirm('Are you sure you want to delete this account?')) {
+				console.log('Delete account:', accountId);
+				deleteAccountById(accountId).then((response) => {
+					console.log('Account deleted:', response);
+					tradingAccounts = tradingAccounts.filter((account) => account.id !== accountId);
+					TradingAccounts.set(tradingAccounts);
+				}).catch((error) => {
+					console.error('Error deleting account:', error);
+				});
+			}
+		}
+	}
 </script>
 <svelte:head>
 	<title>Trading Accounts</title>
@@ -36,10 +56,21 @@
 		<p>There are {tradingAccounts.length} accounts</p>
 		<ul>
 			{#each tradingAccounts as account}
-				<li class="row"><button on:click={selectAccount(account)} disabled={currentAccount && account.id === currentAccount.id}>
+				<li class="row"><button 
+					disabled={currentAccount && account.id === currentAccount.id}
+					on:click={(event) => toggleActionMenu(event, account.id)}
+					>
 					Acount:{account.name}, Balance: ${calcBalance(account)}</button>
 					{#if currentAccount && account.id === currentAccount.id}
 						<img src="/check.svg" alt="Checkmark"/>
+					{:else}
+						{#if showActionMenu && mouseDownAccount === account.id}	
+						<div class="row">
+							<button style="background-color:green;" on:click={selectAccount(account)}>Select</button>
+							<button style="background-color:red;" on:click={deleteAccount(account.id)}>Delete</button>
+							<button on:click={() => window.location.href = `/account-detail?accountId=${account.id}`}>Reset</button>
+						</div>
+						{/if}
 					{/if}
 				</li>
 			{/each}

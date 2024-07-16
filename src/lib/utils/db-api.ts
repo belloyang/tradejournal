@@ -100,6 +100,13 @@ export async function fetchAllAccounts(): Promise<any> {
     return result.data;
 }
 
+// fetch account by id
+export async function fetchAccountById(id: string): Promise<Account> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts/${id}`);
+    const result = await response.json();
+    return result.data;
+}
+
 export async function addAccount(account: any): Promise<{id: string}> {
     const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts`, {
       method: 'POST',
@@ -118,6 +125,26 @@ export async function updateAccount(account: any): Promise<{id: string}> {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({...account, updated_at: new Date()})
+    });
+    return response.json();
+}
+
+export async function deleteAccountById(accountId: number): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/trading_accounts/${accountId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.json();
+}
+
+export async function deleteAccountOptionTrades(accountId: number): Promise<{id: string}> {
+    const response = await fetch(`${DB_HOST}:${DB_PORT}/api/option_trades/account/${accountId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     return response.json();
 }
