@@ -48,6 +48,7 @@
             tradeList = filteredList;
             openTrades = tradeList.filter((trade) => trade.status == TradeStatus.OPEN);
             closedTrades = tradeList.filter((trade) => trade.status == TradeStatus.CLOSED);
+            
             if(selectedDate) {
                 // filter out open trades up to the selected date
                 openTrades = openTrades.filter((trade) => {
@@ -66,6 +67,7 @@
                         return false;
                     }
                 });
+                
             }
             // update PL and number of winning trades
             realizedPL = calcRealizedPL();
@@ -110,7 +112,7 @@
         console.log('HandleDetailChange:', event.detail);
         const updatedTrade = event.detail;
         const index = tradeList.findIndex((trade: any) => trade.id == updatedTrade.id);
-        tradeList[index] = updatedTrade;
+        tradeList[index] = {...updatedTrade, updated_at: new Date()};
         OptionTrades.set(tradeList);
         
     }
